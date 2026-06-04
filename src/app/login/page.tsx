@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { LoginForm } from "@/components/LoginForm";
 import Link from "next/link";
 import { Shield } from "lucide-react";
@@ -14,7 +15,9 @@ export default function LoginPage() {
           <p className="text-gray-500 text-sm mt-1">Entra a tu cuenta de ArmeriaDigital</p>
         </div>
         <div className="card p-8">
-          <LoginForm />
+          <Suspense fallback={<div>Cargando...</div>}>
+            <LoginForm />
+          </Suspense>
           <p className="text-center text-sm text-gray-500 mt-6">
             ¿No tienes cuenta?{" "}
             <Link href="/register" className="text-brand-600 font-medium hover:underline">Regístrate gratis</Link>
