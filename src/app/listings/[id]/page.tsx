@@ -75,7 +75,7 @@ export default async function ListingPage({ params }: Props) {
             )}
 
             <div className="flex flex-wrap gap-4 mt-3 text-xs text-gray-400">
-              <span className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5" /> {l.location}</span>
+              <span className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5" /> {l.municipio || l.location}</span>
               <span className="flex items-center gap-1"><Eye className="w-3.5 h-3.5" /> {l.views} vistas</span>
               <span className="flex items-center gap-1"><Calendar className="w-3.5 h-3.5" /> {formatDate(l.created_at)}</span>
             </div>
