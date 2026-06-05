@@ -28,6 +28,7 @@ export interface Listing {
   municipio?: string;
   featured?: boolean;
   featured_until?: string;
+  relisted_at?: string;
   images: string[];
   whatsapp: string;
   status: ListingStatus;
