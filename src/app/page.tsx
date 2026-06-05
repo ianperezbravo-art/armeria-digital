@@ -82,6 +82,21 @@ export default async function HomePage({ searchParams }: HomeProps) {
         </div>
       </section>
 
+      {/* Photo Grid */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="grid grid-cols-3 gap-4">
+          <div className="relative h-64 rounded-2xl overflow-hidden">
+            <img src="/foto1.jpg" alt="Pistola" className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
+          </div>
+          <div className="relative h-64 rounded-2xl overflow-hidden">
+            <img src="/foto2.jpg" alt="Rifle" className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
+          </div>
+          <div className="relative h-64 rounded-2xl overflow-hidden">
+            <img src="/foto3.jpg" alt="1911" className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
+          </div>
+        </div>
+      </section>
+
       {/* Filters */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <SearchBar initialQuery={params.q} />
@@ -109,4 +124,5 @@ export default async function HomePage({ searchParams }: HomeProps) {
     </div>
   );
 }
+
 
