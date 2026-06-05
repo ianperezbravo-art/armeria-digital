@@ -91,8 +91,8 @@ export function MyListingsClient({ listings: initial }: { listings: any[] }) {
                 />
               )}
               <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2">
-                  <h3 className="font-semibold text-gray-900 truncate">{listing.title}</h3>
+                <h3 className="font-semibold text-gray-900 truncate">{listing.title}</h3>
+                <div className="flex items-center gap-2 mt-0.5 flex-wrap">
                   <span className={`text-xs px-2 py-0.5 rounded-full font-medium shrink-0 ${
                     listing.status === "active" ? "bg-green-100 text-green-700" :
                     listing.status === "sold" ? "bg-gray-100 text-gray-500" :
@@ -100,12 +100,12 @@ export function MyListingsClient({ listings: initial }: { listings: any[] }) {
                   }`}>
                     {listing.status === "active" ? "Activo" : listing.status === "sold" ? "Vendido" : "Pendiente"}
                   </span>
+                  {isFeatured && (
+                    <span className="text-xs bg-yellow-100 text-yellow-800 border border-yellow-300 px-2 py-0.5 rounded-full font-medium shrink-0">
+                      ⭐ Destacado — {featuredDaysLeft} día{featuredDaysLeft === 1 ? "" : "s"} restante{featuredDaysLeft === 1 ? "" : "s"}
+                    </span>
+                  )}
                 </div>
-                {isFeatured && (
-                  <span className="inline-block mt-1 text-xs bg-yellow-100 text-yellow-800 border border-yellow-300 px-2 py-0.5 rounded-full font-medium">
-                    ⭐ Destacado — {featuredDaysLeft} día{featuredDaysLeft === 1 ? "" : "s"} restante{featuredDaysLeft === 1 ? "" : "s"}
-                  </span>
-                )}
                 <p className="text-brand-600 font-bold mt-1">{formatPrice(listing.price)}</p>
                 <p className="text-xs text-gray-400">{formatDate(listing.created_at)}</p>
               </div>
