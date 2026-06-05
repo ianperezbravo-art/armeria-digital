@@ -59,8 +59,8 @@ export default async function HomePage({ searchParams }: HomeProps) {
           </div>
           <div className="mt-12 grid grid-cols-3 gap-6 max-w-md mx-auto text-center">
             {[
-              { icon: TrendingUp, label: "Anuncios activos", value: listings?.length ?? 0 },
-              { icon: ShieldCheck, label: "Vendedores verificados", value: "100%" },
+              { icon: ShieldCheck, label: "Solo licenciados", value: "100% Legal" },
+              { icon: TrendingUp, label: "Publicar anuncios", value: "Gratis" },
               { icon: MessageCircle, label: "Contacto directo", value: "WhatsApp" },
             ].map(({ icon: Icon, label, value }) => (
               <div key={label}>
