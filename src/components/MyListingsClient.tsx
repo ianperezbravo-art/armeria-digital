@@ -18,17 +18,28 @@ export function MyListingsClient({ listings: initial }: { listings: any[] }) {
     );
   };
 const relistListing = async (id: string) => {
+  const listing = listings.find((l) => l.id === id);
+  if (!listing) return;
+
+  const lastRelist = listing.relisted_at || listing.created_at;
+  const daysSince = (Date.now() - new Date(lastRelist).getTime()) / (1000 * 60 * 60 * 24);
+
+  if (daysSince < 7) {
+    const daysLeft = Math.ceil(7 - daysSince);
+    alert(`Puedes renovar este anuncio en ${daysLeft} día${daysLeft === 1 ? "" : "s"}.`);
+    return;
+  }
+
   const now = new Date().toISOString();
-  await supabase.from("listings").update({ 
+  await supabase.from("listings").update({
     created_at: now,
     relisted_at: now,
     status: "active"
   }).eq("id", id);
   setListings((prev) =>
-    prev.map((l) => (l.id === id ? { ...l, created_at: now, status: "active" } : l))
+    prev.map((l) => (l.id === id ? { ...l, created_at: now, relisted_at: now, status: "active" } : l))
   );
-};
-  const deleteListing = async (id: string) => {
+};  const deleteListing = async (id: string) => {
     if (!confirm("¿Seguro que quieres borrar este anuncio?")) return;
     await supabase.from("listings").delete().eq("id", id);
     setListings((prev) => prev.filter((l) => l.id !== id));
