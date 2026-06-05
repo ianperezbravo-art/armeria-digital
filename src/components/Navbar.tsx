@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import type { User } from "@supabase/supabase-js";
-import { Menu, X, Shield, Plus, User as UserIcon, LogOut } from "lucide-react";
+import { Menu, X, Shield, Plus, User as UserIcon, LogOut, Bell } from "lucide-react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
@@ -52,9 +52,12 @@ export function Navbar() {
                 <Link href="/listings/new" className="btn-primary text-xs px-3 py-2">
                   <Plus className="w-4 h-4" /> Publicar
                 </Link>
-<Link href="/my-listings" className="text-sm text-gray-600 hover:text-gray-900 transition-colors flex items-center gap-1">
-  Mis Anuncios
-</Link>
+                <Link href="/my-listings" className="text-sm text-gray-600 hover:text-gray-900 transition-colors flex items-center gap-1">
+                  Mis Anuncios
+                </Link>
+                <Link href="/keyword-alerts" className="text-sm text-gray-600 hover:text-gray-900 transition-colors flex items-center gap-1">
+                  <Bell className="w-4 h-4" /> Alertas
+                </Link>
                 <Link href="/profile" className="text-sm text-gray-600 hover:text-gray-900 transition-colors flex items-center gap-1">
                   <UserIcon className="w-4 h-4" /> Mi Perfil
                 </Link>
@@ -92,7 +95,10 @@ export function Navbar() {
           {user ? (
             <>
               <Link href="/listings/new" onClick={() => setMenuOpen(false)} className="block py-2 text-sm font-semibold text-brand-600">+ Publicar Anuncio</Link>
-<Link href="/my-listings" onClick={() => setMenuOpen(false)} className="block py-2 text-sm text-gray-700">Mis Anuncios</Link>
+              <Link href="/my-listings" onClick={() => setMenuOpen(false)} className="block py-2 text-sm text-gray-700">Mis Anuncios</Link>
+              <Link href="/keyword-alerts" onClick={() => setMenuOpen(false)} className="block py-2 text-sm text-gray-700 flex items-center gap-1">
+                <Bell className="w-4 h-4" /> Alertas
+              </Link>
               <Link href="/profile" onClick={() => setMenuOpen(false)} className="block py-2 text-sm text-gray-700">Mi Perfil</Link>
               <button onClick={() => { handleSignOut(); setMenuOpen(false); }} className="block py-2 text-sm text-red-600">Cerrar Sesión</button>
             </>
@@ -107,4 +113,3 @@ export function Navbar() {
     </nav>
   );
 }
-
