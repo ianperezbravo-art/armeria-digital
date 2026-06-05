@@ -150,7 +150,7 @@ export function NewListingForm({ categories, defaultWhatsapp, userId }: Props) {
       {/* Title */}
       <div>
         <label htmlFor="title" className="label">Titulo *</label>
-        <input id="title" name="title" value={form.title} onChange={handleChange} className="input" placeholder="Ej: Glock 19 Gen 5, calibre 9mm" MaxLength={100} required />
+        <input id="title" name="title" value={form.title} onChange={handleChange} className="input" placeholder="Ej: Glock 19 Gen 5, calibre 9mm" maxLength={100} required />
       </div>
 
       {/* Price & Condition */}
