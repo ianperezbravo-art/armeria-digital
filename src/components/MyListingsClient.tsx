@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { formatPrice, formatDate } from "@/lib/utils";
-import { Trash2, CheckCircle, Eye } from "lucide-react";
+import { Trash2, CheckCircle, Eye, Pencil } from "lucide-react";
 import Link from "next/link";
 
 export function MyListingsClient({ listings: initial }: { listings: any[] }) {
@@ -63,6 +63,9 @@ export function MyListingsClient({ listings: initial }: { listings: any[] }) {
             <Link href={`/listings/${listing.id}`} className="p-2 text-gray-400 hover:text-brand-600">
               <Eye className="w-4 h-4" />
             </Link>
+<Link href={`/listings/${listing.id}/edit`} className="p-2 text-gray-400 hover:text-blue-600" title="Editar">
+  <Pencil className="w-4 h-4" />
+</Link>
             {listing.status === "active" && (
               <button onClick={() => markSold(listing.id)} className="p-2 text-gray-400 hover:text-green-600" title="Marcar vendido">
                 <CheckCircle className="w-4 h-4" />
