@@ -35,7 +35,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <p className="text-xs leading-relaxed">
                 Todas las transacciones deben cumplir con las leyes de Puerto Rico y federales de EE.UU. Es responsabilidad del comprador y vendedor cumplir con los requisitos de licencia y transferencia aplicables.
               </p>
-              
+              <a
                 href="https://ogp.pr.gov/Documents/ley-168-2019-segun-enmendada.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
