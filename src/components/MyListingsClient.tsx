@@ -4,6 +4,7 @@ import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { formatPrice, formatDate } from "@/lib/utils";
 import { Trash2, CheckCircle, Eye, Pencil } from "lucide-react";
+import { FeaturedPlans } from "@/components/FeaturedPlans";
 import Link from "next/link";
 
 export function MyListingsClient({ listings: initial }: { listings: any[] }) {
@@ -74,6 +75,10 @@ export function MyListingsClient({ listings: initial }: { listings: any[] }) {
             <button onClick={() => deleteListing(listing.id)} className="p-2 text-gray-400 hover:text-red-600" title="Borrar">
               <Trash2 className="w-4 h-4" />
             </button>
+</div>
+        </div>
+        <FeaturedPlans listingId={listing.id} />
+      </div>
           </div>
         </div>
       ))}
