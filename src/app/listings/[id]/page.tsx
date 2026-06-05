@@ -142,7 +142,7 @@ export default async function ListingPage({ params }: Props) {
 
           <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 text-xs text-amber-800">
             <p className="font-semibold mb-1">Aviso Legal</p>
-            <p>Todas las transferencias deben realizarse conforme a las leyes de Puerto Rico y federales de EE.UU. Asegúrate de cumplir con los requisitos de licencia aplicables.</p>
+            <p>Todas las transacciones de armas de fuego deben realizarse conforme a la Ley 168-2019 de Armas de Puerto Rico y las leyes federales aplicables. Se requiere licencia de armas vigente para comprar, vender o transferir armas de fuego.</p>
           </div>
         </div>
       </div>

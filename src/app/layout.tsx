@@ -33,7 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <div>
               <h4 className="text-white font-semibold mb-2">Aviso Legal</h4>
               <p className="text-xs leading-relaxed">
-                Todas las transacciones deben cumplir con las leyes de Puerto Rico y federales de EE.UU. Es responsabilidad del comprador y vendedor cumplir con los requisitos de licencia y transferencia aplicables.
+                Todas las transacciones de armas de fuego deben realizarse conforme a la Ley 168-2019 de Armas de Puerto Rico y las leyes federales aplicables. Se requiere licencia de armas vigente para comprar, vender o transferir armas de fuego.
               </p>
               <a
                 href="https://bvirtualogp.pr.gov/ogp/Bvirtual/leyesreferencia/PDF/168-2019.pdf"
