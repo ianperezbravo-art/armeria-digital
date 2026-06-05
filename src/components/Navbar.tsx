@@ -52,6 +52,9 @@ export function Navbar() {
                 <Link href="/listings/new" className="btn-primary text-xs px-3 py-2">
                   <Plus className="w-4 h-4" /> Publicar
                 </Link>
+<Link href="/my-listings" className="text-sm text-gray-600 hover:text-gray-900 transition-colors flex items-center gap-1">
+  Mis Anuncios
+</Link>
                 <Link href="/profile" className="text-sm text-gray-600 hover:text-gray-900 transition-colors flex items-center gap-1">
                   <UserIcon className="w-4 h-4" /> Mi Perfil
                 </Link>
