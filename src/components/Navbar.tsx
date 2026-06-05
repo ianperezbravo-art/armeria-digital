@@ -92,6 +92,7 @@ export function Navbar() {
           {user ? (
             <>
               <Link href="/listings/new" onClick={() => setMenuOpen(false)} className="block py-2 text-sm font-semibold text-brand-600">+ Publicar Anuncio</Link>
+<Link href="/my-listings" onClick={() => setMenuOpen(false)} className="block py-2 text-sm text-gray-700">Mis Anuncios</Link>
               <Link href="/profile" onClick={() => setMenuOpen(false)} className="block py-2 text-sm text-gray-700">Mi Perfil</Link>
               <button onClick={() => { handleSignOut(); setMenuOpen(false); }} className="block py-2 text-sm text-red-600">Cerrar Sesión</button>
             </>
