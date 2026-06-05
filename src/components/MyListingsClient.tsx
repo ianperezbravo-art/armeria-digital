@@ -80,8 +80,9 @@ export function MyListingsClient({ listings: initial }: { listings: any[] }) {
         const showReminder = daysSinceCreated > 15 && listing.status === "active";
 
         return (
-          <div key={listing.id}>
-            <div className="card p-4 flex items-center gap-4">
+          <div key={listing.id} className="card overflow-hidden">
+            {/* Info principal */}
+            <div className="p-4 flex items-center gap-4">
               {listing.images?.[0] && (
                 <img
                   src={listing.images[0]}
@@ -91,8 +92,8 @@ export function MyListingsClient({ listings: initial }: { listings: any[] }) {
               )}
               <div className="flex-1 min-w-0">
                 <h3 className="font-semibold text-gray-900 truncate">{listing.title}</h3>
-                <div className="flex items-center gap-1.5 mt-0.5">
-                  <span className={`text-xs px-2 py-0.5 rounded-full font-medium shrink-0 ${
+                <div className="flex items-center gap-1.5 mt-0.5 flex-wrap">
+                  <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
                     listing.status === "active" ? "bg-green-100 text-green-700" :
                     listing.status === "sold" ? "bg-gray-100 text-gray-500" :
                     "bg-yellow-100 text-yellow-700"
@@ -100,38 +101,45 @@ export function MyListingsClient({ listings: initial }: { listings: any[] }) {
                     {listing.status === "active" ? "Activo" : listing.status === "sold" ? "Vendido" : "Pendiente"}
                   </span>
                   {isFeatured && (
-                    <span className="text-xs bg-yellow-100 text-yellow-800 border border-yellow-300 px-2 py-0.5 rounded-full font-medium shrink-0">
-                      ⭐ {featuredDaysLeft}d
+                    <span className="text-xs bg-yellow-100 text-yellow-800 border border-yellow-300 px-2 py-0.5 rounded-full font-medium">
+                      ⭐ Destacado — {featuredDaysLeft} día{featuredDaysLeft === 1 ? "" : "s"} restante{featuredDaysLeft === 1 ? "" : "s"}
                     </span>
                   )}
                 </div>
                 <p className="text-brand-600 font-bold mt-1">{formatPrice(listing.price)}</p>
                 <p className="text-xs text-gray-400">{formatDate(listing.created_at)}</p>
               </div>
-              <div className="flex items-center gap-2 shrink-0">
-                <Link href={`/listings/${listing.id}`} className="p-2 text-gray-400 hover:text-brand-600">
-                  <Eye className="w-4 h-4" />
-                </Link>
-                <Link href={`/listings/${listing.id}/edit`} className="p-2 text-gray-400 hover:text-blue-600" title="Editar">
-                  <Pencil className="w-4 h-4" />
-                </Link>
-                {listing.status === "active" && (
-                  <button onClick={() => markSold(listing.id)} className="p-2 text-gray-400 hover:text-green-600" title="Marcar vendido">
-                    <CheckCircle className="w-4 h-4" />
-                  </button>
-                )}
-                <button onClick={() => relistListing(listing.id)} className="p-2 text-gray-400 hover:text-purple-600" title="Renovar anuncio">
-                  <RefreshCw className="w-4 h-4" />
+            </div>
+
+            {/* Botones de acción abajo */}
+            <div className="border-t border-gray-100 px-4 py-2 flex items-center gap-1">
+              <Link href={`/listings/${listing.id}`} className="flex items-center gap-1 px-3 py-1.5 text-xs text-gray-500 hover:text-brand-600 hover:bg-gray-50 rounded-lg">
+                <Eye className="w-3.5 h-3.5" />
+                Ver
+              </Link>
+              <Link href={`/listings/${listing.id}/edit`} className="flex items-center gap-1 px-3 py-1.5 text-xs text-gray-500 hover:text-blue-600 hover:bg-gray-50 rounded-lg">
+                <Pencil className="w-3.5 h-3.5" />
+                Editar
+              </Link>
+              {listing.status === "active" && (
+                <button onClick={() => markSold(listing.id)} className="flex items-center gap-1 px-3 py-1.5 text-xs text-gray-500 hover:text-green-600 hover:bg-gray-50 rounded-lg">
+                  <CheckCircle className="w-3.5 h-3.5" />
+                  Vendido
                 </button>
-                <button onClick={() => deleteListing(listing.id)} className="p-2 text-gray-400 hover:text-red-600" title="Borrar">
-                  <Trash2 className="w-4 h-4" />
-                </button>
-              </div>
+              )}
+              <button onClick={() => relistListing(listing.id)} className="flex items-center gap-1 px-3 py-1.5 text-xs text-gray-500 hover:text-purple-600 hover:bg-gray-50 rounded-lg">
+                <RefreshCw className="w-3.5 h-3.5" />
+                Renovar
+              </button>
+              <button onClick={() => deleteListing(listing.id)} className="flex items-center gap-1 px-3 py-1.5 text-xs text-gray-500 hover:text-red-600 hover:bg-gray-50 rounded-lg ml-auto">
+                <Trash2 className="w-3.5 h-3.5" />
+                Borrar
+              </button>
             </div>
 
             {/* Banner 15 días */}
             {showReminder && (
-              <div className="mt-3 p-4 bg-yellow-50 border border-yellow-200 rounded-lg text-sm">
+              <div className="mx-4 mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg text-sm">
                 <p className="font-medium text-yellow-800">¿Ya vendiste este artículo?</p>
                 <p className="text-yellow-700 mt-1">Este anuncio lleva más de 15 días publicado. Márcalo como vendido, renuévalo para aparecer primero, o destácalo para más visibilidad.</p>
                 <div className="flex gap-2 mt-2 mb-4">
@@ -167,7 +175,7 @@ export function MyListingsClient({ listings: initial }: { listings: any[] }) {
 
             {/* Planes para listings sin reminder y no destacados */}
             {!showReminder && listing.status === "active" && !isFeatured && (
-              <div className="mt-2 p-4 bg-gray-50 border border-gray-200 rounded-lg text-sm">
+              <div className="mx-4 mb-4 p-4 bg-gray-50 border border-gray-200 rounded-lg text-sm">
                 <p className="text-xs font-semibold text-gray-700 mb-2">⭐ Destaca tu anuncio para más visibilidad:</p>
                 <div className="grid grid-cols-3 gap-2">
                   {PLANS.map((plan) => (
