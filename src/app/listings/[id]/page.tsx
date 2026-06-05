@@ -106,7 +106,7 @@ export default async function ListingPage({ params }: Props) {
             </div>
           </div>
 
-          
+          <a
             href={waUrl}
             target="_blank"
             rel="noopener noreferrer"
