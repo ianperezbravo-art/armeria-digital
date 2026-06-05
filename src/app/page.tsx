@@ -109,25 +109,6 @@ export default async function HomePage({ searchParams }: HomeProps) {
           </div>
         )}
       </div>
-
-      {/* Ley 168 Banner */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10">
-        <a
-          href="https://ogp.pr.gov/Documents/ley-168-2019-segun-enmendada.pdf"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center justify-between gap-4 bg-brand-50 border border-brand-200 rounded-xl px-6 py-4 hover:bg-brand-100 transition-colors"
-        >
-          <div className="flex items-center gap-3">
-            <span className="text-2xl">⚖️</span>
-            <div>
-              <p className="font-semibold text-brand-900 text-sm">Ley de Armas de Puerto Rico</p>
-              <p className="text-xs text-brand-600">Ley Núm. 168 de 2019, según enmendada — Rev. junio 2025</p>
-            </div>
-          </div>
-          <span className="text-xs font-medium text-brand-700 bg-brand-100 border border-brand-300 px-3 py-1 rounded-full shrink-0">Ver PDF →</span>
-        </a>
-      </div>
     </div>
   );
 }
