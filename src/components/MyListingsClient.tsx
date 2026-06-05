@@ -102,6 +102,24 @@ const relistListing = async (id: string) => {
               </button>
             </div>
           </div>
+{(() => {
+  const daysSinceCreated = (Date.now() - new Date(listing.relisted_at || listing.created_at).getTime()) / (1000 * 60 * 60 * 24);
+  return daysSinceCreated > 15 && listing.status === "active" ? (
+    <div className="mt-3 p-3 bg-yellow-50 border border-yellow-200 rounded-lg text-sm">
+      <p className="font-medium text-yellow-800">¿Ya vendiste este artículo?</p>
+      <p className="text-yellow-700 mt-1">Este anuncio lleva más de 15 días publicado. Márcalo como vendido, renuévalo para aparecer primero, o destácalo para más visibilidad.</p>
+      <div className="flex gap-2 mt-2">
+        <button onClick={() => relistListing(listing.id)} className="text-xs bg-yellow-100 hover:bg-yellow-200 text-yellow-800 px-3 py-1 rounded-full font-medium">
+          🔄 Renovar
+        </button>
+        <button onClick={() => markSold(listing.id)} className="text-xs bg-green-100 hover:bg-green-200 text-green-800 px-3 py-1 rounded-full font-medium">
+          ✅ Ya vendí
+        </button>
+      </div>
+    </div>
+  ) : null;
+})()}
+<FeaturedPlans listingId={listing.id} />
           <FeaturedPlans listingId={listing.id} />
         </div>
       ))}
