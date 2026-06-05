@@ -26,6 +26,8 @@ export interface Listing {
   condition: ListingCondition;
   location: string;
   municipio?: string;
+  featured?: boolean;
+  featured_until?: string;
   images: string[];
   whatsapp: string;
   status: ListingStatus;
