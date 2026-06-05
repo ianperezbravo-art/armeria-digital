@@ -75,7 +75,7 @@ export function MyListingsClient({ listings: initial }: { listings: any[] }) {
             <button onClick={() => deleteListing(listing.id)} className="p-2 text-gray-400 hover:text-red-600" title="Borrar">
               <Trash2 className="w-4 h-4" />
             </button>
-</div>
+          </div>
         </div>
         <FeaturedPlans listingId={listing.id} />
       </div>
