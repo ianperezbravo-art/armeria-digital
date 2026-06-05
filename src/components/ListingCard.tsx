@@ -48,7 +48,11 @@ export function ListingCard({ listing }: { listing: Listing }) {
         <p className="text-brand-600 font-bold text-lg mt-2">
           {formatPrice(listing.price)}
         </p>
-
+	{listing.featured && (
+  <span className="absolute top-2 left-2 bg-yellow-400 text-yellow-900 text-xs font-bold px-2 py-0.5 rounded-full">
+    ⭐ Destacado
+  </span>
+)}
         {listing.categories && (
           <p className="text-xs text-gray-500 mt-1">{listing.categories.name}</p>
         )}
