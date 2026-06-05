@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { formatPrice, formatDate } from "@/lib/utils";
-import { Trash2, CheckCircle, Eye, Pencil } from "lucide-react";
+import { Trash2, CheckCircle, Eye, Pencil, RefreshCw } from "lucide-react";
 import { FeaturedPlans } from "@/components/FeaturedPlans";
 import Link from "next/link";
 
