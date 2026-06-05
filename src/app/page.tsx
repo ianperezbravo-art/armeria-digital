@@ -112,7 +112,7 @@ export default async function HomePage({ searchParams }: HomeProps) {
 
       {/* Ley 168 Banner */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10">
-        
+        <a
           href="https://ogp.pr.gov/Documents/ley-168-2019-segun-enmendada.pdf"
           target="_blank"
           rel="noopener noreferrer"
