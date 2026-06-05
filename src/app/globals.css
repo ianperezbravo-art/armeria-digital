@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-500;600;700;800&display=swap');
-
 @layer base {
   * {
     @apply box-border;
@@ -33,5 +31,7 @@
     @apply bg-white rounded-xl shadow-sm ring-1 ring-gray-200 overflow-hidden;
   }
 }
+
+
 
 
