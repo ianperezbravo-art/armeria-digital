@@ -15,6 +15,8 @@ export function ListingCard({ listing }: { listing: Listing }) {
         {mainImage ? (
           <Image
             src={mainImage}
+
+
             alt={listing.title}
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-300"
@@ -26,6 +28,11 @@ export function ListingCard({ listing }: { listing: Listing }) {
               <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zm-8.5-5.5l-2.51 3.01L7 14l-3 4h16l-5.5-7.5z"/>
             </svg>
           </div>
+        )}
+        {listing.featured && (
+         <span className="absolute top-2 left-2 bg-yellow-400 text-yellow-900 text-xs font-bold px-2 py-0.5 rounded-full z-10">
+          ⭐ Destacado
+         </span>
         )}
         {listing.images?.length > 1 && (
           <span className="absolute bottom-2 right-2 bg-black/60 text-white text-xs rounded-full px-2 py-0.5">
@@ -48,12 +55,7 @@ export function ListingCard({ listing }: { listing: Listing }) {
         <p className="text-brand-600 font-bold text-lg mt-2">
           {formatPrice(listing.price)}
         </p>
-	{listing.featured && (
-  <span className="absolute top-2 left-2 bg-yellow-400 text-yellow-900 text-xs font-bold px-2 py-0.5 rounded-full">
-    ⭐ Destacado
-  </span>
-)}
-        {listing.categories && (
+	   {listing.categories && (
           <p className="text-xs text-gray-500 mt-1">{listing.categories.name}</p>
         )}
 
