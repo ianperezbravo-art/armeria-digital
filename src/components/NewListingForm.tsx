@@ -8,6 +8,8 @@ import { Upload, X, Loader2 } from "lucide-react";
 import toast from "react-hot-toast";
 import Image from "next/image";
 
+const MUNICIPIOS = ["Adjuntas","Aguada","Aguadilla","Aguas Buenas","Aibonito","Anasco","Arecibo","Arroyo","Barceloneta","Barranquitas","Bayamon","Cabo Rojo","Caguas","Camuy","Canovanas","Carolina","Catano","Cayey","Ceiba","Ciales","Cidra","Coamo","Comerio","Corozal","Culebra","Dorado","Fajardo","Florida","Guanica","Guayama","Guayanilla","Guaynabo","Gurabo","Hatillo","Hormigueros","Humacao","Isabela","Jayuya","Juana Diaz","Juncos","Lajas","Lares","Las Marias","Las Piedras","Loiza","Luquillo","Manati","Maricao","Maunabo","Mayaguez","Moca","Morovis","Naguabo","Naranjito","Orocovis","Patillas","Penuelas","Ponce","Quebradillas","Rincon","Rio Grande","Sabana Grande","Salinas","San German","San Juan","San Lorenzo","San Sebastian","Santa Isabel","Toa Alta","Toa Baja","Trujillo Alto","Utuado","Vega Alta","Vega Baja","Vieques","Villalba","Yabucoa","Yauco"];
+
 interface Props {
   categories: Category[];
   defaultWhatsapp: string;
@@ -29,6 +31,7 @@ export function NewListingForm({ categories, defaultWhatsapp, userId }: Props) {
     condition: "bueno" as string,
     category_id: "",
     location: "Puerto Rico",
+    municipio: "",
     whatsapp: defaultWhatsapp,
   });
 
@@ -64,7 +67,6 @@ export function NewListingForm({ categories, defaultWhatsapp, userId }: Props) {
 
     setLoading(true);
     try {
-      // Upload images
       const uploadedUrls: string[] = [];
       for (const file of imageFiles) {
         const ext = file.name.split(".").pop();
@@ -85,6 +87,7 @@ export function NewListingForm({ categories, defaultWhatsapp, userId }: Props) {
           condition: form.condition,
           category_id: form.category_id ? parseInt(form.category_id) : null,
           location: form.location.trim(),
+          municipio: form.municipio,
           whatsapp: form.whatsapp.replace(/\D/g, ""),
           images: uploadedUrls,
         })
@@ -92,7 +95,7 @@ export function NewListingForm({ categories, defaultWhatsapp, userId }: Props) {
         .single();
 
       if (error) throw error;
-      toast.success("Â¡Anuncio publicado!");
+      toast.success("¡Anuncio publicado!");
       router.push(`/listings/${data.id}`);
     } catch (err: any) {
       toast.error(err.message ?? "Error al publicar");
@@ -141,16 +144,16 @@ export function NewListingForm({ categories, defaultWhatsapp, userId }: Props) {
           className="hidden"
           onChange={handleImages}
         />
-        <p className="text-xs text-gray-400 mt-1">JPG, PNG o WebP Â· MÃ¡x 8 fotos Â· La primera foto serÃ¡ la principal</p>
+        <p className="text-xs text-gray-400 mt-1">JPG, PNG o WebP · Máx 8 fotos · La primera foto será la principal</p>
       </div>
 
       {/* Title */}
       <div>
-        <label htmlFor="title" className="label">TÃ­tulo *</label>
+        <label htmlFor="title" className="label">Título *</label>
         <input id="title" name="title" value={form.title} onChange={handleChange} className="input" placeholder="Ej: Glock 19 Gen 5, calibre 9mm" maxLength={100} required />
       </div>
 
-      {/* Price */}
+      {/* Price & Condition */}
       <div className="grid grid-cols-2 gap-4">
         <div>
           <label htmlFor="price" className="label">Precio (USD) *</label>
@@ -160,7 +163,7 @@ export function NewListingForm({ categories, defaultWhatsapp, userId }: Props) {
           </div>
         </div>
         <div>
-          <label htmlFor="condition" className="label">CondiciÃ³n *</label>
+          <label htmlFor="condition" className="label">Condición *</label>
           <select id="condition" name="condition" value={form.condition} onChange={handleChange} className="input">
             <option value="nuevo">Nuevo</option>
             <option value="como_nuevo">Como Nuevo</option>
@@ -170,26 +173,31 @@ export function NewListingForm({ categories, defaultWhatsapp, userId }: Props) {
         </div>
       </div>
 
-      {/* Category & Location */}
+      {/* Category & Municipio */}
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label htmlFor="category_id" className="label">CategorÃ­a</label>
+          <label htmlFor="category_id" className="label">Categoría</label>
           <select id="category_id" name="category_id" value={form.category_id} onChange={handleChange} className="input">
-            <option value="">Sin categorÃ­a</option>
+            <option value="">Sin categoría</option>
             {categories.map((c) => (
               <option key={c.id} value={c.id}>{c.name}</option>
             ))}
           </select>
         </div>
         <div>
-          <label htmlFor="location" className="label">UbicaciÃ³n</label>
-          <input id="location" name="location" value={form.location} onChange={handleChange} className="input" placeholder="Ej: San Juan, PR" />
+          <label htmlFor="municipio" className="label">Municipio</label>
+          <select id="municipio" name="municipio" value={form.municipio} onChange={handleChange} className="input">
+            <option value="">Selecciona municipio</option>
+            {MUNICIPIOS.map((m) => (
+              <option key={m} value={m}>{m}</option>
+            ))}
+          </select>
         </div>
       </div>
 
       {/* Description */}
       <div>
-        <label htmlFor="description" className="label">DescripciÃ³n *</label>
+        <label htmlFor="description" className="label">Descripción *</label>
         <textarea
           id="description"
           name="description"
@@ -197,14 +205,14 @@ export function NewListingForm({ categories, defaultWhatsapp, userId }: Props) {
           onChange={handleChange}
           rows={5}
           className="input resize-none"
-          placeholder="Describe el artÃ­culo con detalle: marca, modelo, calibre, accesorios incluidos, historial, etc."
+          placeholder="Describe el artículo con detalle: marca, modelo, calibre, accesorios incluidos, historial, etc."
           required
         />
       </div>
 
       {/* WhatsApp */}
       <div>
-        <label htmlFor="whatsapp" className="label">NÃºmero de WhatsApp *</label>
+        <label htmlFor="whatsapp" className="label">Número de WhatsApp *</label>
         <div className="relative">
           <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm">+</span>
           <input
@@ -217,7 +225,7 @@ export function NewListingForm({ categories, defaultWhatsapp, userId }: Props) {
             required
           />
         </div>
-        <p className="text-xs text-gray-400 mt-1">Incluye el cÃ³digo de paÃ­s. Ej: 17871234567 (Puerto Rico)</p>
+        <p className="text-xs text-gray-400 mt-1">Incluye el código de país. Ej: 17871234567 (Puerto Rico)</p>
       </div>
 
       <button type="submit" disabled={loading} className="btn-primary w-full py-3 text-base">
