@@ -17,7 +17,17 @@ export function MyListingsClient({ listings: initial }: { listings: any[] }) {
       prev.map((l) => (l.id === id ? { ...l, status: "sold" } : l))
     );
   };
-
+const relistListing = async (id: string) => {
+  const now = new Date().toISOString();
+  await supabase.from("listings").update({ 
+    created_at: now,
+    relisted_at: now,
+    status: "active"
+  }).eq("id", id);
+  setListings((prev) =>
+    prev.map((l) => (l.id === id ? { ...l, created_at: now, status: "active" } : l))
+  );
+};
   const deleteListing = async (id: string) => {
     if (!confirm("¿Seguro que quieres borrar este anuncio?")) return;
     await supabase.from("listings").delete().eq("id", id);
@@ -73,6 +83,9 @@ export function MyListingsClient({ listings: initial }: { listings: any[] }) {
                   <CheckCircle className="w-4 h-4" />
                 </button>
               )}
+         <button onClick={() => relistListing(listing.id)} className="p-2 text-gray-400 hover:text-purple-600" title="Renovar anuncio">
+          <RefreshCw className="w-4 h-4" />
+         </button>
               <button onClick={() => deleteListing(listing.id)} className="p-2 text-gray-400 hover:text-red-600" title="Borrar">
                 <Trash2 className="w-4 h-4" />
               </button>
