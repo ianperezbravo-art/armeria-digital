@@ -1,4 +1,4 @@
-"use client";
+ï»¿"use client";
 
 import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
@@ -83,9 +83,9 @@ export function NewListingForm({ categories, defaultWhatsapp, userId }: Props) {
           user_id: userId,
           title: form.title.trim(),
           description: form.description.trim(),
-          price: parseFloat(form.price),
+          price: paiseFloat(form.price),
           condition: form.condition,
-          category_id: form.category_id ? parseInt(form.category_id) : null,
+          category_id: form.category_id ? paiseInt(form.category_id) : null,
           location: form.location.trim(),
           municipio: form.municipio,
           whatsapp: form.whatsapp.replace(/\D/g, ""),
@@ -95,7 +95,7 @@ export function NewListingForm({ categories, defaultWhatsapp, userId }: Props) {
         .single();
 
       if (error) throw error;
-      toast.success("¡Anuncio publicado!");
+      toast.success("ï¿½Anuncio publicado!");
       router.push(`/listings/${data.id}`);
     } catch (err: any) {
       toast.error(err.message ?? "Error al publicar");
@@ -144,13 +144,13 @@ export function NewListingForm({ categories, defaultWhatsapp, userId }: Props) {
           className="hidden"
           onChange={handleImages}
         />
-        <p className="text-xs text-gray-400 mt-1">JPG, PNG o WebP · Máx 8 fotos · La primera foto será la principal</p>
+        <p className="text-xs text-gray-400 mt-1">JPG, PNG o WebP ï¿½ Max 8 fotos ï¿½ La primera foto sera la principal</p>
       </div>
 
       {/* Title */}
       <div>
-        <label htmlFor="title" className="label">Título *</label>
-        <input id="title" name="title" value={form.title} onChange={handleChange} className="input" placeholder="Ej: Glock 19 Gen 5, calibre 9mm" maxLength={100} required />
+        <label htmlFor="title" className="label">Titulo *</label>
+        <input id="title" name="title" value={form.title} onChange={handleChange} className="input" placeholder="Ej: Glock 19 Gen 5, calibre 9mm" MaxLength={100} required />
       </div>
 
       {/* Price & Condition */}
@@ -163,7 +163,7 @@ export function NewListingForm({ categories, defaultWhatsapp, userId }: Props) {
           </div>
         </div>
         <div>
-          <label htmlFor="condition" className="label">Condición *</label>
+          <label htmlFor="condition" className="label">Condicion *</label>
           <select id="condition" name="condition" value={form.condition} onChange={handleChange} className="input">
             <option value="nuevo">Nuevo</option>
             <option value="como_nuevo">Como Nuevo</option>
@@ -176,9 +176,9 @@ export function NewListingForm({ categories, defaultWhatsapp, userId }: Props) {
       {/* Category & Municipio */}
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label htmlFor="category_id" className="label">Categoría</label>
+          <label htmlFor="category_id" className="label">Categoria</label>
           <select id="category_id" name="category_id" value={form.category_id} onChange={handleChange} className="input">
-            <option value="">Sin categoría</option>
+            <option value="">Sin Categoria</option>
             {categories.map((c) => (
               <option key={c.id} value={c.id}>{c.name}</option>
             ))}
@@ -197,7 +197,7 @@ export function NewListingForm({ categories, defaultWhatsapp, userId }: Props) {
 
       {/* Description */}
       <div>
-        <label htmlFor="description" className="label">Descripción *</label>
+        <label htmlFor="description" className="label">Descripcion *</label>
         <textarea
           id="description"
           name="description"
@@ -205,14 +205,14 @@ export function NewListingForm({ categories, defaultWhatsapp, userId }: Props) {
           onChange={handleChange}
           rows={5}
           className="input resize-none"
-          placeholder="Describe el artículo con detalle: marca, modelo, calibre, accesorios incluidos, historial, etc."
+          placeholder="Describe el artï¿½culo con detalle: marca, modelo, calibre, accesorios incluidos, historial, etc."
           required
         />
       </div>
 
       {/* WhatsApp */}
       <div>
-        <label htmlFor="whatsapp" className="label">Número de WhatsApp *</label>
+        <label htmlFor="whatsapp" className="label">Numero de WhatsApp *</label>
         <div className="relative">
           <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm">+</span>
           <input
@@ -225,7 +225,7 @@ export function NewListingForm({ categories, defaultWhatsapp, userId }: Props) {
             required
           />
         </div>
-        <p className="text-xs text-gray-400 mt-1">Incluye el código de país. Ej: 17871234567 (Puerto Rico)</p>
+        <p className="text-xs text-gray-400 mt-1">Incluye el codigo de pais. Ej: 17871234567 (Puerto Rico)</p>
       </div>
 
       <button type="submit" disabled={loading} className="btn-primary w-full py-3 text-base">
