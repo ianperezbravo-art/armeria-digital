@@ -55,7 +55,7 @@ export function ListingCard({ listing }: { listing: Listing }) {
 
         <div className="flex items-center justify-between mt-3 text-xs text-gray-400">
           <span className="flex items-center gap-1">
-            <MapPin className="w-3 h-3" /> {listing.location}
+            <MapPin className="w-3 h-3" /> {listing.municipio || listing.location}
           </span>
           <span className="flex items-center gap-1">
             <Eye className="w-3 h-3" /> {listing.views}
