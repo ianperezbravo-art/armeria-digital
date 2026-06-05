@@ -119,7 +119,7 @@ const relistListing = async (id: string) => {
     </div>
   ) : null;
 })()}
-          <FeaturedPlans listingId={listing.id} />
+<FeaturedPlans listingId={listing.id} />
         </div>
       ))}
     </div>
