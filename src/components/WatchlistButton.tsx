@@ -12,14 +12,38 @@ export function WatchlistButton({ listingId, initialInWatchlist }: { listingId: 
 
   const toggle = async () => {
     setLoading(true);
+
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      toast.error("Debes iniciar sesión");
+      setLoading(false);
+      return;
+    }
+
     if (inWatchlist) {
-      await supabase.from("watchlist").delete().eq("listing_id", listingId);
-      setInWatchlist(false);
-      toast.success("Eliminado de tu watchlist");
+      const { error } = await supabase
+        .from("watchlist")
+        .delete()
+        .eq("listing_id", listingId)
+        .eq("user_id", user.id);
+
+      if (error) {
+        toast.error("Error al eliminar");
+      } else {
+        setInWatchlist(false);
+        toast.success("Eliminado de tu watchlist");
+      }
     } else {
-      await supabase.from("watchlist").insert({ listing_id: listingId });
-      setInWatchlist(true);
-      toast.success("Agregado a tu watchlist");
+      const { error } = await supabase
+        .from("watchlist")
+        .insert({ listing_id: listingId, user_id: user.id });
+
+      if (error) {
+        toast.error("Error al guardar");
+      } else {
+        setInWatchlist(true);
+        toast.success("Agregado a tu watchlist");
+      }
     }
     setLoading(false);
   };
