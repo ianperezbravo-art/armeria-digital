@@ -8,20 +8,18 @@ import { Plus, TrendingUp, ShieldCheck, MessageCircle } from "lucide-react";
 import { MunicipioFilter } from "@/components/MunicipioFilter";
 
 interface HomeProps {
-searchParams: Promise<{ category?: string; q?: string; condition?: string; municipio?: string }>;
+  searchParams: Promise<{ category?: string; q?: string; condition?: string; municipio?: string }>;
 }
 
 export default async function HomePage({ searchParams }: HomeProps) {
   const params = await searchParams;
   const supabase = await createClient();
 
-  // Fetch categories
   const { data: categories } = await supabase
     .from("categories")
     .select("*")
     .order("name");
 
-  // Build listings query
   let query = supabase
     .from("listings")
     .select("*, profiles(username, whatsapp), categories(name, slug)")
@@ -31,22 +29,12 @@ export default async function HomePage({ searchParams }: HomeProps) {
     .limit(24);
 
   if (params.category) {
-    const cat = (categories as Category[])?.find(
-      (c) => c.slug === params.category
-    );
+    const cat = (categories as Category[])?.find((c) => c.slug === params.category);
     if (cat) query = query.eq("category_id", cat.id);
   }
-
-  if (params.condition) {
-    query = query.eq("condition", params.condition);
-  }
-if (params.municipio) {
-  query = query.eq("municipio", params.municipio);
-}
-
-  if (params.q) {
-    query = query.ilike("title", `%${params.q}%`);
-  }
+  if (params.condition) query = query.eq("condition", params.condition);
+  if (params.municipio) query = query.eq("municipio", params.municipio);
+  if (params.q) query = query.ilike("title", `%${params.q}%`);
 
   const { data: listings } = await query;
 
@@ -59,8 +47,7 @@ if (params.municipio) {
             El Marketplace de Armas<br className="hidden sm:block" /> de Puerto Rico
           </h1>
           <p className="text-brand-100 text-lg mb-8 max-w-xl mx-auto">
-            Compra y vende pistolas, rifles, accesorios y más entre
-            particulares y comerciantes licenciados.
+            Compra y vende pistolas, rifles, accesorios y más entre particulares y comerciantes licenciados.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link href="/listings" className="btn-primary bg-white text-brand-700 hover:bg-brand-50 px-8 py-3 text-base">
@@ -70,7 +57,6 @@ if (params.municipio) {
               <Plus className="w-5 h-5" /> Publicar Gratis
             </Link>
           </div>
-          {/* Stats */}
           <div className="mt-12 grid grid-cols-3 gap-6 max-w-md mx-auto text-center">
             {[
               { icon: TrendingUp, label: "Anuncios activos", value: listings?.length ?? 0 },
@@ -102,16 +88,12 @@ if (params.municipio) {
         </div>
       </section>
 
-      {/* Filters */}
+      {/* Filters + Listings */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <SearchBar initialQuery={params.q} />
-        <CategoryFilter
-          categories={(categories as Category[]) ?? []}
-          activeSlug={params.category}
-        />
-<MunicipioFilter activeMunicipio={params.municipio} />
+        <CategoryFilter categories={(categories as Category[]) ?? []} activeSlug={params.category} />
+        <MunicipioFilter activeMunicipio={params.municipio} />
 
-        {/* Listings grid */}
         {listings && listings.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mt-6">
             {(listings as Listing[]).map((listing) => (
@@ -127,8 +109,25 @@ if (params.municipio) {
           </div>
         )}
       </div>
+
+      {/* Ley 168 Banner */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10">
+        
+          href="https://ogp.pr.gov/Documents/ley-168-2019-segun-enmendada.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center justify-between gap-4 bg-brand-50 border border-brand-200 rounded-xl px-6 py-4 hover:bg-brand-100 transition-colors"
+        >
+          <div className="flex items-center gap-3">
+            <span className="text-2xl">⚖️</span>
+            <div>
+              <p className="font-semibold text-brand-900 text-sm">Ley de Armas de Puerto Rico</p>
+              <p className="text-xs text-brand-600">Ley Núm. 168 de 2019, según enmendada — Rev. junio 2025</p>
+            </div>
+          </div>
+          <span className="text-xs font-medium text-brand-700 bg-brand-100 border border-brand-300 px-3 py-1 rounded-full shrink-0">Ver PDF →</span>
+        </a>
+      </div>
     </div>
   );
 }
-
-
