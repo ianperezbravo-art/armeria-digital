@@ -6,6 +6,7 @@ import { formatPrice, formatDate, buildWhatsAppUrl } from "@/lib/utils";
 import { ImageGallery } from "@/components/ImageGallery";
 import { MapPin, Eye, Calendar, User, Tag } from "lucide-react";
 import Link from "next/link";
+import { WatchlistButton } from "@/components/WatchlistButton";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -24,8 +25,27 @@ export default async function ListingPage({ params }: Props) {
 
   if (!listing) notFound();
 
-  // Increment views (fire-and-forget)
   supabase.rpc("increment_listing_views", { listing_id: id }).then(() => {});
+
+  const { data: { user } } = await supabase.auth.getUser();
+
+  // Check if already in watchlist
+  let inWatchlist = false;
+  if (user) {
+    const { data: wl } = await supabase
+      .from("watchlist")
+      .select("id")
+      .eq("user_id", user.id)
+      .eq("listing_id", id)
+      .single();
+    inWatchlist = !!wl;
+  }
+
+  // Count watchers
+  const { count: watcherCount } = await supabase
+    .from("watchlist")
+    .select("id", { count: "exact", head: true })
+    .eq("listing_id", id);
 
   const l = listing as Listing;
   const waMessage = `Hola, vi tu anuncio en ArmeriaDigital: "${l.title}" por ${formatPrice(l.price)}. ¿Aún está disponible?`;
@@ -78,11 +98,14 @@ export default async function ListingPage({ params }: Props) {
               <span className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5" /> {l.municipio || l.location}</span>
               <span className="flex items-center gap-1"><Eye className="w-3.5 h-3.5" /> {l.views} vistas</span>
               <span className="flex items-center gap-1"><Calendar className="w-3.5 h-3.5" /> {formatDate(l.created_at)}</span>
+              {watcherCount && watcherCount > 0 && (
+                <span className="flex items-center gap-1">👁 {watcherCount} siguiendo</span>
+              )}
             </div>
           </div>
 
           {/* WhatsApp CTA */}
-          <a
+          
             href={waUrl}
             target="_blank"
             rel="noopener noreferrer"
@@ -93,6 +116,14 @@ export default async function ListingPage({ params }: Props) {
             </svg>
             Contactar por WhatsApp
           </a>
+
+          {/* Watchlist button */}
+          {user && user.id !== l.user_id && (
+            <WatchlistButton
+              listingId={id}
+              initialInWatchlist={inWatchlist}
+            />
+          )}
 
           {/* Seller info */}
           {l.profiles && (
