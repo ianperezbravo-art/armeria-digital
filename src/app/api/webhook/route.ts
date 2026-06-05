@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@supabase/supabase-js";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: "2026-05-27.dahlia",
+});
 
 const PLAN_DAYS: Record<string, number> = {
   "7": 7,
@@ -32,7 +34,11 @@ export async function POST(req: NextRequest) {
     const featuredUntil = new Date();
     featuredUntil.setDate(featuredUntil.getDate() + days);
 
-    const supabase = await createClient();
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    );
+
     await supabase
       .from("listings")
       .update({ featured: true, featured_until: featuredUntil.toISOString() })
