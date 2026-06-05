@@ -3,18 +3,20 @@
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { formatPrice, formatDate } from "@/lib/utils";
-import { Trash2, CheckCircle, Eye, Pencil, RefreshCw } from "lucide-react";
+import { Trash2, CheckCircle, Eye, Pencil, RefreshCw, Users } from "lucide-react";
 import Link from "next/link";
+import toast from "react-hot-toast";
 
 export function MyListingsClient({ listings: initial }: { listings: any[] }) {
   const [listings, setListings] = useState(initial);
+  const [offerModal, setOfferModal] = useState<{ listingId: string; title: string; price: number } | null>(null);
+  const [offerPrice, setOfferPrice] = useState("");
+  const [sendingOffer, setSendingOffer] = useState(false);
   const supabase = createClient();
 
   const markSold = async (id: string) => {
     await supabase.from("listings").update({ status: "sold" }).eq("id", id);
-    setListings((prev) =>
-      prev.map((l) => (l.id === id ? { ...l, status: "sold" } : l))
-    );
+    setListings((prev) => prev.map((l) => (l.id === id ? { ...l, status: "sold" } : l)));
   };
 
   const relistListing = async (id: string) => {
@@ -28,14 +30,8 @@ export function MyListingsClient({ listings: initial }: { listings: any[] }) {
       return;
     }
     const now = new Date().toISOString();
-    await supabase.from("listings").update({
-      created_at: now,
-      relisted_at: now,
-      status: "active"
-    }).eq("id", id);
-    setListings((prev) =>
-      prev.map((l) => (l.id === id ? { ...l, created_at: now, relisted_at: now, status: "active" } : l))
-    );
+    await supabase.from("listings").update({ created_at: now, relisted_at: now, status: "active" }).eq("id", id);
+    setListings((prev) => prev.map((l) => (l.id === id ? { ...l, created_at: now, relisted_at: now, status: "active" } : l)));
   };
 
   const deleteListing = async (id: string) => {
@@ -52,6 +48,29 @@ export function MyListingsClient({ listings: initial }: { listings: any[] }) {
     });
     const { url } = await res.json();
     if (url) window.location.href = url;
+  };
+
+  const sendOffer = async () => {
+    if (!offerModal || !offerPrice) return;
+    const price = parseFloat(offerPrice);
+    if (isNaN(price) || price <= 0) {
+      toast.error("Ingresa un precio válido");
+      return;
+    }
+    setSendingOffer(true);
+    const res = await fetch("/api/send-offer", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ listingId: offerModal.listingId, offerPrice: price }),
+    });
+    setSendingOffer(false);
+    if (res.ok) {
+      toast.success("¡Oferta enviada a tus watchers!");
+      setOfferModal(null);
+      setOfferPrice("");
+    } else {
+      toast.error("Error al enviar la oferta");
+    }
   };
 
   const PLANS = [
@@ -72,132 +91,166 @@ export function MyListingsClient({ listings: initial }: { listings: any[] }) {
   }
 
   return (
-    <div className="space-y-6">
-      {listings.map((listing) => {
-        const isFeatured = listing.featured && listing.featured_until && new Date(listing.featured_until) > new Date();
-        const featuredDaysLeft = isFeatured ? Math.ceil((new Date(listing.featured_until).getTime() - Date.now()) / (1000 * 60 * 60 * 24)) : 0;
-        const daysSinceCreated = (Date.now() - new Date(listing.relisted_at || listing.created_at).getTime()) / (1000 * 60 * 60 * 24);
-        const showReminder = daysSinceCreated > 15 && listing.status === "active";
+    <>
+      <div className="space-y-6">
+        {listings.map((listing) => {
+          const isFeatured = listing.featured && listing.featured_until && new Date(listing.featured_until) > new Date();
+          const featuredDaysLeft = isFeatured ? Math.ceil((new Date(listing.featured_until).getTime() - Date.now()) / (1000 * 60 * 60 * 24)) : 0;
+          const daysSinceCreated = (Date.now() - new Date(listing.relisted_at || listing.created_at).getTime()) / (1000 * 60 * 60 * 24);
+          const showReminder = daysSinceCreated > 15 && listing.status === "active";
 
-        return (
-          <div key={listing.id} className="card overflow-hidden">
-            {/* Info principal */}
-            <div className="p-4 flex items-center gap-4">
-              {listing.images?.[0] && (
-                <img
-                  src={listing.images[0]}
-                  alt={listing.title}
-                  className="w-20 h-20 object-cover rounded-lg shrink-0"
-                />
-              )}
-              <div className="flex-1 min-w-0">
-                <h3 className="font-semibold text-gray-900 truncate">{listing.title}</h3>
-                <div className="flex items-center gap-1.5 mt-0.5 flex-wrap">
-                  <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
-                    listing.status === "active" ? "bg-green-100 text-green-700" :
-                    listing.status === "sold" ? "bg-gray-100 text-gray-500" :
-                    "bg-yellow-100 text-yellow-700"
-                  }`}>
-                    {listing.status === "active" ? "Activo" : listing.status === "sold" ? "Vendido" : "Pendiente"}
-                  </span>
-                  {isFeatured && (
-                    <span className="text-xs bg-yellow-100 text-yellow-800 border border-yellow-300 px-2 py-0.5 rounded-full font-medium">
-                      ⭐ Destacado — {featuredDaysLeft} día{featuredDaysLeft === 1 ? "" : "s"} restante{featuredDaysLeft === 1 ? "" : "s"}
+          return (
+            <div key={listing.id} className="card overflow-hidden">
+              <div className="p-4 flex items-center gap-4">
+                {listing.images?.[0] && (
+                  <img src={listing.images[0]} alt={listing.title} className="w-20 h-20 object-cover rounded-lg shrink-0" />
+                )}
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-semibold text-gray-900 truncate">{listing.title}</h3>
+                  <div className="flex items-center gap-1.5 mt-0.5">
+                    <span className={`text-xs px-2 py-0.5 rounded-full font-medium shrink-0 ${
+                      listing.status === "active" ? "bg-green-100 text-green-700" :
+                      listing.status === "sold" ? "bg-gray-100 text-gray-500" :
+                      "bg-yellow-100 text-yellow-700"
+                    }`}>
+                      {listing.status === "active" ? "Activo" : listing.status === "sold" ? "Vendido" : "Pendiente"}
                     </span>
+                    {isFeatured && (
+                      <span className="text-xs bg-yellow-100 text-yellow-800 border border-yellow-300 px-2 py-0.5 rounded-full font-medium shrink-0">
+                        ⭐ {featuredDaysLeft}d
+                      </span>
+                    )}
+                    {listing.watcher_count > 0 && (
+                      <span className="text-xs text-gray-400 flex items-center gap-0.5 shrink-0">
+                        <Users className="w-3 h-3" /> {listing.watcher_count}
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-brand-600 font-bold mt-1">{formatPrice(listing.price)}</p>
+                  <p className="text-xs text-gray-400">{formatDate(listing.created_at)}</p>
+                </div>
+              </div>
+
+              <div className="border-t border-gray-100 px-4 py-2 flex items-center gap-1 flex-wrap">
+                <Link href={`/listings/${listing.id}`} className="flex items-center gap-1 px-3 py-1.5 text-xs text-gray-500 hover:text-brand-600 hover:bg-gray-50 rounded-lg">
+                  <Eye className="w-3.5 h-3.5" /> Ver
+                </Link>
+                <Link href={`/listings/${listing.id}/edit`} className="flex items-center gap-1 px-3 py-1.5 text-xs text-gray-500 hover:text-blue-600 hover:bg-gray-50 rounded-lg">
+                  <Pencil className="w-3.5 h-3.5" /> Editar
+                </Link>
+                {listing.status === "active" && (
+                  <button onClick={() => markSold(listing.id)} className="flex items-center gap-1 px-3 py-1.5 text-xs text-gray-500 hover:text-green-600 hover:bg-gray-50 rounded-lg">
+                    <CheckCircle className="w-3.5 h-3.5" /> Vendido
+                  </button>
+                )}
+                <button onClick={() => relistListing(listing.id)} className="flex items-center gap-1 px-3 py-1.5 text-xs text-gray-500 hover:text-purple-600 hover:bg-gray-50 rounded-lg">
+                  <RefreshCw className="w-3.5 h-3.5" /> Renovar
+                </button>
+                {listing.watcher_count > 0 && listing.status === "active" && (
+                  <button
+                    onClick={() => { setOfferModal({ listingId: listing.id, title: listing.title, price: listing.price }); setOfferPrice(""); }}
+                    className="flex items-center gap-1 px-3 py-1.5 text-xs text-orange-600 hover:bg-orange-50 rounded-lg font-medium"
+                  >
+                    <Users className="w-3.5 h-3.5" /> Enviar oferta
+                  </button>
+                )}
+                <button onClick={() => deleteListing(listing.id)} className="flex items-center gap-1 px-3 py-1.5 text-xs text-gray-500 hover:text-red-600 hover:bg-gray-50 rounded-lg ml-auto">
+                  <Trash2 className="w-3.5 h-3.5" /> Borrar
+                </button>
+              </div>
+
+              {showReminder && (
+                <div className="mx-4 mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg text-sm">
+                  <p className="font-medium text-yellow-800">¿Ya vendiste este artículo?</p>
+                  <p className="text-yellow-700 mt-1">Este anuncio lleva más de 15 días publicado. Márcalo como vendido, renuévalo para aparecer primero, o destácalo para más visibilidad.</p>
+                  <div className="flex gap-2 mt-2 mb-4">
+                    <button onClick={() => relistListing(listing.id)} className="text-xs bg-yellow-100 hover:bg-yellow-200 text-yellow-800 px-3 py-1 rounded-full font-medium">
+                      🔄 Renovar
+                    </button>
+                    <button onClick={() => markSold(listing.id)} className="text-xs bg-green-100 hover:bg-green-200 text-green-800 px-3 py-1 rounded-full font-medium">
+                      ✅ Ya vendí
+                    </button>
+                  </div>
+                  {!isFeatured && (
+                    <>
+                      <p className="text-xs font-semibold text-yellow-800 mb-2">⭐ Destaca tu anuncio para más visibilidad:</p>
+                      <div className="grid grid-cols-3 gap-2">
+                        {PLANS.map((plan) => (
+                          <div key={plan.days} className={`border rounded-lg p-2 text-center relative ${plan.popular ? "border-yellow-500 bg-yellow-100" : "border-yellow-200 bg-white"}`}>
+                            {plan.popular && (
+                              <span className="absolute -top-2 left-1/2 -translate-x-1/2 bg-yellow-500 text-white text-xs px-2 py-0.5 rounded-full">Popular</span>
+                            )}
+                            <p className="text-base font-extrabold text-gray-900">{plan.price}</p>
+                            <p className="text-xs text-gray-600">{plan.label}</p>
+                            <p className="text-xs text-gray-400 mb-1">{plan.description}</p>
+                            <button onClick={() => handleFeaturedCheckout(listing.id, plan.days)} className="btn-primary w-full text-xs py-1">Destacar</button>
+                          </div>
+                        ))}
+                      </div>
+                    </>
                   )}
                 </div>
-                <p className="text-brand-600 font-bold mt-1">{formatPrice(listing.price)}</p>
-                <p className="text-xs text-gray-400">{formatDate(listing.created_at)}</p>
-              </div>
-            </div>
-
-            {/* Botones de acción abajo */}
-            <div className="border-t border-gray-100 px-4 py-2 flex items-center gap-1">
-              <Link href={`/listings/${listing.id}`} className="flex items-center gap-1 px-3 py-1.5 text-xs text-gray-500 hover:text-brand-600 hover:bg-gray-50 rounded-lg">
-                <Eye className="w-3.5 h-3.5" />
-                Ver
-              </Link>
-              <Link href={`/listings/${listing.id}/edit`} className="flex items-center gap-1 px-3 py-1.5 text-xs text-gray-500 hover:text-blue-600 hover:bg-gray-50 rounded-lg">
-                <Pencil className="w-3.5 h-3.5" />
-                Editar
-              </Link>
-              {listing.status === "active" && (
-                <button onClick={() => markSold(listing.id)} className="flex items-center gap-1 px-3 py-1.5 text-xs text-gray-500 hover:text-green-600 hover:bg-gray-50 rounded-lg">
-                  <CheckCircle className="w-3.5 h-3.5" />
-                  Vendido
-                </button>
               )}
-              <button onClick={() => relistListing(listing.id)} className="flex items-center gap-1 px-3 py-1.5 text-xs text-gray-500 hover:text-purple-600 hover:bg-gray-50 rounded-lg">
-                <RefreshCw className="w-3.5 h-3.5" />
-                Renovar
+
+              {!showReminder && listing.status === "active" && !isFeatured && (
+                <div className="mx-4 mb-4 p-4 bg-gray-50 border border-gray-200 rounded-lg text-sm">
+                  <p className="text-xs font-semibold text-gray-700 mb-2">⭐ Destaca tu anuncio para más visibilidad:</p>
+                  <div className="grid grid-cols-3 gap-2">
+                    {PLANS.map((plan) => (
+                      <div key={plan.days} className={`border rounded-lg p-2 text-center relative ${plan.popular ? "border-brand-500 bg-brand-50" : "border-gray-200 bg-white"}`}>
+                        {plan.popular && (
+                          <span className="absolute -top-2 left-1/2 -translate-x-1/2 bg-brand-600 text-white text-xs px-2 py-0.5 rounded-full">Popular</span>
+                        )}
+                        <p className="text-base font-extrabold text-gray-900">{plan.price}</p>
+                        <p className="text-xs text-gray-600">{plan.label}</p>
+                        <p className="text-xs text-gray-400 mb-1">{plan.description}</p>
+                        <button onClick={() => handleFeaturedCheckout(listing.id, plan.days)} className="btn-primary w-full text-xs py-1">Destacar</button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Modal de oferta */}
+      {offerModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
+          <div className="bg-white rounded-xl p-6 w-full max-w-md">
+            <h2 className="text-lg font-bold text-gray-900 mb-1">Enviar oferta a watchers</h2>
+            <p className="text-sm text-gray-500 mb-4">{offerModal.title}</p>
+            <p className="text-xs text-gray-400 mb-2">Precio actual: {formatPrice(offerModal.price)}</p>
+            <label className="label">Precio de oferta</label>
+            <div className="relative mt-1 mb-4">
+              <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400">$</span>
+              <input
+                type="number"
+                value={offerPrice}
+                onChange={(e) => setOfferPrice(e.target.value)}
+                className="input pl-7"
+                placeholder="Ej: 850"
+              />
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setOfferModal(null)}
+                className="flex-1 border border-gray-300 rounded-lg py-2 text-sm text-gray-600 hover:bg-gray-50"
+              >
+                Cancelar
               </button>
-              <button onClick={() => deleteListing(listing.id)} className="flex items-center gap-1 px-3 py-1.5 text-xs text-gray-500 hover:text-red-600 hover:bg-gray-50 rounded-lg ml-auto">
-                <Trash2 className="w-3.5 h-3.5" />
-                Borrar
+              <button
+                onClick={sendOffer}
+                disabled={sendingOffer}
+                className="flex-1 btn-primary py-2 text-sm"
+              >
+                {sendingOffer ? "Enviando..." : "Enviar oferta"}
               </button>
             </div>
-
-            {/* Banner 15 días */}
-            {showReminder && (
-              <div className="mx-4 mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg text-sm">
-                <p className="font-medium text-yellow-800">¿Ya vendiste este artículo?</p>
-                <p className="text-yellow-700 mt-1">Este anuncio lleva más de 15 días publicado. Márcalo como vendido, renuévalo para aparecer primero, o destácalo para más visibilidad.</p>
-                <div className="flex gap-2 mt-2 mb-4">
-                  <button onClick={() => relistListing(listing.id)} className="text-xs bg-yellow-100 hover:bg-yellow-200 text-yellow-800 px-3 py-1 rounded-full font-medium">
-                    🔄 Renovar
-                  </button>
-                  <button onClick={() => markSold(listing.id)} className="text-xs bg-green-100 hover:bg-green-200 text-green-800 px-3 py-1 rounded-full font-medium">
-                    ✅ Ya vendí
-                  </button>
-                </div>
-                {!isFeatured && (
-                  <>
-                    <p className="text-xs font-semibold text-yellow-800 mb-2">⭐ Destaca tu anuncio para más visibilidad:</p>
-                    <div className="grid grid-cols-3 gap-2">
-                      {PLANS.map((plan) => (
-                        <div key={plan.days} className={`border rounded-lg p-2 text-center relative ${plan.popular ? "border-yellow-500 bg-yellow-100" : "border-yellow-200 bg-white"}`}>
-                          {plan.popular && (
-                            <span className="absolute -top-2 left-1/2 -translate-x-1/2 bg-yellow-500 text-white text-xs px-2 py-0.5 rounded-full">Popular</span>
-                          )}
-                          <p className="text-base font-extrabold text-gray-900">{plan.price}</p>
-                          <p className="text-xs text-gray-600">{plan.label}</p>
-                          <p className="text-xs text-gray-400 mb-1">{plan.description}</p>
-                          <button onClick={() => handleFeaturedCheckout(listing.id, plan.days)} className="btn-primary w-full text-xs py-1">
-                            Destacar
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  </>
-                )}
-              </div>
-            )}
-
-            {/* Planes para listings sin reminder y no destacados */}
-            {!showReminder && listing.status === "active" && !isFeatured && (
-              <div className="mx-4 mb-4 p-4 bg-gray-50 border border-gray-200 rounded-lg text-sm">
-                <p className="text-xs font-semibold text-gray-700 mb-2">⭐ Destaca tu anuncio para más visibilidad:</p>
-                <div className="grid grid-cols-3 gap-2">
-                  {PLANS.map((plan) => (
-                    <div key={plan.days} className={`border rounded-lg p-2 text-center relative ${plan.popular ? "border-brand-500 bg-brand-50" : "border-gray-200 bg-white"}`}>
-                      {plan.popular && (
-                        <span className="absolute -top-2 left-1/2 -translate-x-1/2 bg-brand-600 text-white text-xs px-2 py-0.5 rounded-full">Popular</span>
-                      )}
-                      <p className="text-base font-extrabold text-gray-900">{plan.price}</p>
-                      <p className="text-xs text-gray-600">{plan.label}</p>
-                      <p className="text-xs text-gray-400 mb-1">{plan.description}</p>
-                      <button onClick={() => handleFeaturedCheckout(listing.id, plan.days)} className="btn-primary w-full text-xs py-1">
-                        Destacar
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
           </div>
-        );
-      })}
-    </div>
+        </div>
+      )}
+    </>
   );
 }

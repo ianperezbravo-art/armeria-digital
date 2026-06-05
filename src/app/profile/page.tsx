@@ -4,24 +4,32 @@ import { ListingCard } from "@/components/ListingCard";
 import { ProfileActions } from "@/components/ProfileActions";
 import type { Listing } from "@/types";
 import { formatDate } from "@/lib/utils";
-import { User, Package } from "lucide-react";
+import { User, Package, Heart } from "lucide-react";
 
 export default async function ProfilePage() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
-  const [{ data: profile }, { data: listings }] = await Promise.all([
+  const [{ data: profile }, { data: listings }, { data: watchlistItems }] = await Promise.all([
     supabase.from("profiles").select("*").eq("id", user.id).single(),
     supabase
       .from("listings")
       .select("*, categories(name, slug)")
       .eq("user_id", user.id)
       .order("created_at", { ascending: false }),
+    supabase
+      .from("watchlist")
+      .select("listing_id, listings(*, categories(name, slug))")
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: false }),
   ]);
 
   const active = (listings ?? []).filter((l) => l.status === "active");
   const other = (listings ?? []).filter((l) => l.status !== "active");
+  const watchedListings = (watchlistItems ?? [])
+    .map((w: any) => w.listings)
+    .filter(Boolean) as Listing[];
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
@@ -40,11 +48,12 @@ export default async function ProfilePage() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-3 gap-4 mb-8">
+      <div className="grid grid-cols-4 gap-4 mb-8">
         {[
           { label: "Anuncios activos", value: active.length },
           { label: "Total publicados", value: listings?.length ?? 0 },
           { label: "Vendidos", value: (listings ?? []).filter(l => l.status === "sold").length },
+          { label: "En Watchlist", value: watchedListings.length },
         ].map(({ label, value }) => (
           <div key={label} className="card p-4 text-center">
             <p className="text-2xl font-bold text-gray-900">{value}</p>
@@ -89,6 +98,21 @@ export default async function ProfilePage() {
             ))}
           </div>
         </>
+      )}
+
+      {/* Watchlist */}
+      <div className="flex items-center gap-2 mt-10 mb-4">
+        <Heart className="w-5 h-5 text-red-500" />
+        <h2 className="text-lg font-bold text-gray-900">Mi Watchlist</h2>
+      </div>
+      {watchedListings.length > 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {watchedListings.map((l) => (
+            <ListingCard key={l.id} listing={l} />
+          ))}
+        </div>
+      ) : (
+        <p className="text-gray-500 text-sm">No tienes artículos en tu watchlist todavía.</p>
       )}
     </div>
   );
