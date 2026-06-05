@@ -12,7 +12,7 @@ export default function LoginPage() {
             <Shield className="w-6 h-6 text-white" />
           </div>
           <h1 className="text-2xl font-bold text-gray-900">Bienvenido de vuelta</h1>
-          <p className="text-gray-500 text-sm mt-1">Entra a tu cuenta de ArmeriaDigital</p>
+          <p className="text-gray-500 text-sm mt-1">Entra a tu cuenta de Calibre</p>
         </div>
         <div className="card p-8">
           <Suspense fallback={<div>Cargando...</div>}>

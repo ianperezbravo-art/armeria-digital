@@ -109,3 +109,4 @@ export default async function HomePage({ searchParams }: HomeProps) {
     </div>
   );
 }
+

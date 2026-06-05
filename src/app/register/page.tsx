@@ -11,7 +11,7 @@ export default function RegisterPage() {
             <Shield className="w-6 h-6 text-white" />
           </div>
           <h1 className="text-2xl font-bold text-gray-900">Crear cuenta</h1>
-          <p className="text-gray-500 text-sm mt-1">Únete a la comunidad de ArmeriaDigital</p>
+          <p className="text-gray-500 text-sm mt-1">Únete a la comunidad de Calibre</p>
         </div>
         <div className="card p-8">
           <RegisterForm />

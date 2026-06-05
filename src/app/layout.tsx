@@ -4,12 +4,12 @@ import { Navbar } from "@/components/Navbar";
 import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
-  title: "ArmeriaDigital — Mercado de Armas y Accesorios en Puerto Rico",
+  title: "Calibre — Mercado de Armas y Accesorios en Puerto Rico",
   description:
     "Compra y vende armas de fuego, accesorios, municiones y equipo táctico en Puerto Rico. El marketplace #1 para la comunidad de tiradores boricuas.",
   keywords: "armas, accesorios, pistolas, rifles, Puerto Rico, marketplace",
   openGraph: {
-    title: "ArmeriaDigital",
+    title: "Calibre",
     description: "Marketplace de armas y accesorios en Puerto Rico",
     locale: "es_PR",
     type: "website",
@@ -30,7 +30,7 @@ export default function RootLayout({
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
               <h3 className="text-white font-bold text-lg mb-2">
-                ArmeriaDigital
+                Calibre
               </h3>
               <p className="text-sm leading-relaxed">
                 El marketplace de armas y accesorios #1 de Puerto Rico. Compra
@@ -49,9 +49,9 @@ export default function RootLayout({
             </div>
             <div>
               <h4 className="text-white font-semibold mb-2">Contacto</h4>
-              <p className="text-sm">info@armeriadigital.pr</p>
+              <p className="text-sm">info@Calibre.pr</p>
               <p className="mt-4 text-xs">
-                © {new Date().getFullYear()} ArmeriaDigital. Todos los derechos
+                © {new Date().getFullYear()} Calibre. Todos los derechos
                 reservados.
               </p>
             </div>
@@ -62,3 +62,4 @@ export default function RootLayout({
     </html>
   );
 }
+

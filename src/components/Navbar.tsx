@@ -36,7 +36,7 @@ export function Navbar() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 font-bold text-xl text-brand-600">
             <Shield className="w-6 h-6" />
-            <span>ArmeriaDigital</span>
+            <span>Calibre</span>
           </Link>
 
           {/* Desktop nav */}
@@ -103,3 +103,4 @@ export function Navbar() {
     </nav>
   );
 }
+
