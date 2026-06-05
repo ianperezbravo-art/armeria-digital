@@ -81,7 +81,6 @@ export function MyListingsClient({ listings: initial }: { listings: any[] }) {
 
         return (
           <div key={listing.id}>
-            {/* Card principal */}
             <div className="card p-4 flex items-center gap-4">
               {listing.images?.[0] && (
                 <img
@@ -92,7 +91,7 @@ export function MyListingsClient({ listings: initial }: { listings: any[] }) {
               )}
               <div className="flex-1 min-w-0">
                 <h3 className="font-semibold text-gray-900 truncate">{listing.title}</h3>
-                <div className="flex items-center gap-2 mt-0.5 flex-wrap">
+                <div className="flex items-center gap-1.5 mt-0.5">
                   <span className={`text-xs px-2 py-0.5 rounded-full font-medium shrink-0 ${
                     listing.status === "active" ? "bg-green-100 text-green-700" :
                     listing.status === "sold" ? "bg-gray-100 text-gray-500" :
@@ -102,7 +101,7 @@ export function MyListingsClient({ listings: initial }: { listings: any[] }) {
                   </span>
                   {isFeatured && (
                     <span className="text-xs bg-yellow-100 text-yellow-800 border border-yellow-300 px-2 py-0.5 rounded-full font-medium shrink-0">
-                      ⭐ Destacado — {featuredDaysLeft} día{featuredDaysLeft === 1 ? "" : "s"} restante{featuredDaysLeft === 1 ? "" : "s"}
+                      ⭐ {featuredDaysLeft}d
                     </span>
                   )}
                 </div>
