@@ -25,6 +25,7 @@ export interface Listing {
   price: number;
   condition: ListingCondition;
   location: string;
+  municipio?: string;
   images: string[];
   whatsapp: string;
   status: ListingStatus;
