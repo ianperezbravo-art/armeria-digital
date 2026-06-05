@@ -54,6 +54,12 @@ export function MyListingsClient({ listings: initial }: { listings: any[] }) {
     if (url) window.location.href = url;
   };
 
+  const PLANS = [
+    { days: "7", price: "$5", label: "7 días", description: "Vende rápido" },
+    { days: "15", price: "$10", label: "15 días", description: "Más visibilidad", popular: true },
+    { days: "30", price: "$15", label: "30 días", description: "Máxima exposición" },
+  ];
+
   if (listings.length === 0) {
     return (
       <div className="text-center text-gray-500 mt-16">
@@ -75,6 +81,7 @@ export function MyListingsClient({ listings: initial }: { listings: any[] }) {
 
         return (
           <div key={listing.id}>
+            {/* Card principal */}
             <div className="card p-4 flex items-center gap-4">
               {listing.images?.[0] && (
                 <img
@@ -123,6 +130,7 @@ export function MyListingsClient({ listings: initial }: { listings: any[] }) {
               </div>
             </div>
 
+            {/* Banner 15 días */}
             {showReminder && (
               <div className="mt-3 p-4 bg-yellow-50 border border-yellow-200 rounded-lg text-sm">
                 <p className="font-medium text-yellow-800">¿Ya vendiste este artículo?</p>
@@ -139,11 +147,7 @@ export function MyListingsClient({ listings: initial }: { listings: any[] }) {
                   <>
                     <p className="text-xs font-semibold text-yellow-800 mb-2">⭐ Destaca tu anuncio para más visibilidad:</p>
                     <div className="grid grid-cols-3 gap-2">
-                      {[
-                        { days: "7", price: "$5", label: "7 días", description: "Vende rápido" },
-                        { days: "15", price: "$10", label: "15 días", description: "Más visibilidad", popular: true },
-                        { days: "30", price: "$15", label: "30 días", description: "Máxima exposición" },
-                      ].map((plan) => (
+                      {PLANS.map((plan) => (
                         <div key={plan.days} className={`border rounded-lg p-2 text-center relative ${plan.popular ? "border-yellow-500 bg-yellow-100" : "border-yellow-200 bg-white"}`}>
                           {plan.popular && (
                             <span className="absolute -top-2 left-1/2 -translate-x-1/2 bg-yellow-500 text-white text-xs px-2 py-0.5 rounded-full">Popular</span>
@@ -151,10 +155,7 @@ export function MyListingsClient({ listings: initial }: { listings: any[] }) {
                           <p className="text-base font-extrabold text-gray-900">{plan.price}</p>
                           <p className="text-xs text-gray-600">{plan.label}</p>
                           <p className="text-xs text-gray-400 mb-1">{plan.description}</p>
-                          <button
-                            onClick={() => handleFeaturedCheckout(listing.id, plan.days)}
-                            className="btn-primary w-full text-xs py-1"
-                          >
+                          <button onClick={() => handleFeaturedCheckout(listing.id, plan.days)} className="btn-primary w-full text-xs py-1">
                             Destacar
                           </button>
                         </div>
@@ -164,6 +165,29 @@ export function MyListingsClient({ listings: initial }: { listings: any[] }) {
                 )}
               </div>
             )}
+
+            {/* Planes para listings sin reminder y no destacados */}
+            {!showReminder && listing.status === "active" && !isFeatured && (
+              <div className="mt-2 p-4 bg-gray-50 border border-gray-200 rounded-lg text-sm">
+                <p className="text-xs font-semibold text-gray-700 mb-2">⭐ Destaca tu anuncio para más visibilidad:</p>
+                <div className="grid grid-cols-3 gap-2">
+                  {PLANS.map((plan) => (
+                    <div key={plan.days} className={`border rounded-lg p-2 text-center relative ${plan.popular ? "border-brand-500 bg-brand-50" : "border-gray-200 bg-white"}`}>
+                      {plan.popular && (
+                        <span className="absolute -top-2 left-1/2 -translate-x-1/2 bg-brand-600 text-white text-xs px-2 py-0.5 rounded-full">Popular</span>
+                      )}
+                      <p className="text-base font-extrabold text-gray-900">{plan.price}</p>
+                      <p className="text-xs text-gray-600">{plan.label}</p>
+                      <p className="text-xs text-gray-400 mb-1">{plan.description}</p>
+                      <button onClick={() => handleFeaturedCheckout(listing.id, plan.days)} className="btn-primary w-full text-xs py-1">
+                        Destacar
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
           </div>
         );
       })}
