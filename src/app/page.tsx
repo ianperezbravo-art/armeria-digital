@@ -27,7 +27,7 @@ export default async function HomePage({ searchParams }: HomeProps) {
     .select("*, profiles(username, whatsapp), categories(name, slug)")
     .eq("status", "active")
     .order("featured", { ascending: false })
-.order("created_at", { ascending: false })
+    .order("created_at", { ascending: false })
     .limit(24);
 
   if (params.category) {
