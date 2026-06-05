@@ -5,9 +5,10 @@ import { CategoryFilter } from "@/components/CategoryFilter";
 import { SearchBar } from "@/components/SearchBar";
 import type { Listing, Category } from "@/types";
 import { Plus, TrendingUp, ShieldCheck, MessageCircle } from "lucide-react";
+import { MunicipioFilter } from "@/components/MunicipioFilter";
 
 interface HomeProps {
-  searchParams: Promise<{ category?: string; q?: string; condition?: string }>;
+searchParams: Promise<{ category?: string; q?: string; condition?: string; municipio?: string }>;
 }
 
 export default async function HomePage({ searchParams }: HomeProps) {
@@ -38,6 +39,9 @@ export default async function HomePage({ searchParams }: HomeProps) {
   if (params.condition) {
     query = query.eq("condition", params.condition);
   }
+if (params.municipio) {
+  query = query.eq("municipio", params.municipio);
+}
 
   if (params.q) {
     query = query.ilike("title", `%${params.q}%`);
@@ -104,6 +108,7 @@ export default async function HomePage({ searchParams }: HomeProps) {
           categories={(categories as Category[]) ?? []}
           activeSlug={params.category}
         />
+<MunicipioFilter activeMunicipio={params.municipio} />
 
         {/* Listings grid */}
         {listings && listings.length > 0 ? (
