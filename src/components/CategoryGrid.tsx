@@ -22,7 +22,7 @@ export function CategoryGrid({ categories }: { categories: Category[] }) {
           return (
             <Link
               key={cat.id}
-              href={`/?category=${cat.slug}`}
+              href={`/?category=${cat.slug}#listings`}
               className="group relative rounded-2xl overflow-hidden h-40 shadow-sm hover:shadow-xl transition-all duration-300"
             >
               <img

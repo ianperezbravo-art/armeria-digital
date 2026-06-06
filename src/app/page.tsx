@@ -94,13 +94,13 @@ export default async function HomePage({ searchParams }: HomeProps) {
 </div>
 
         {listings && listings.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mt-6">
+          <div id="listings" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mt-6">
             {(listings as Listing[]).map((listing) => (
               <ListingCard key={listing.id} listing={listing} />
             ))}
           </div>
         ) : (
-          <div className="mt-16 text-center text-gray-500">
+          <div id="listings" className="mt-16 text-center text-gray-500">
             <p className="text-lg font-medium">No se encontraron anuncios</p>
             <p className="text-sm mt-1">Intenta cambiar los filtros o{" "}
               <Link href="/listings/new" className="text-brand-600 hover:underline">publica el primero</Link>.
