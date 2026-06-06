@@ -20,7 +20,7 @@ export default async function HomePage({ searchParams }: HomeProps) {
   const { data: categories } = await supabase
     .from("categories")
     .select("*")
-    .order("name");
+    .order("sort_order");
 
   let query = supabase
     .from("listings")
