@@ -15,8 +15,8 @@ const FALLBACK = "/categories/default.jpg";
 
 export function CategoryGrid({ categories }: { categories: Category[] }) {
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-4">
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
         {categories.map((cat) => {
           const img = CATEGORY_IMAGES[cat.slug] ?? FALLBACK;
           return (
