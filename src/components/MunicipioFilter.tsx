@@ -38,7 +38,7 @@ export function MunicipioFilter({ activeMunicipio }: Props) {
     <select
       value={activeMunicipio || ""}
       onChange={handleChange}
-      className="h-10 rounded-lg border border-gray-200 bg-white px-3 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-500"
+      className="mt-3 h-10 rounded-lg border border-gray-200 bg-white px-3 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-500"
     >
       <option value="">Todos los municipios</option>
       {MUNICIPIOS.map((m) => (

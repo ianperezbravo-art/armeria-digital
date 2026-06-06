@@ -80,9 +80,18 @@ export default async function HomePage({ searchParams }: HomeProps) {
 
       {/* Filters + Listings */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <SearchBar initialQuery={params.q} />
-        <CategoryFilter categories={(categories as Category[]) ?? []} activeSlug={params.category} />
-        <MunicipioFilter activeMunicipio={params.municipio} />
+       <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4">
+  <div className="flex-1">
+    <SearchBar initialQuery={params.q} />
+  </div>
+  <div className="hidden sm:block">
+    <MunicipioFilter activeMunicipio={params.municipio} />
+  </div>
+</div>
+<CategoryFilter categories={(categories as Category[]) ?? []} activeSlug={params.category} />
+<div className="sm:hidden">
+  <MunicipioFilter activeMunicipio={params.municipio} />
+</div>
 
         {listings && listings.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mt-6">
