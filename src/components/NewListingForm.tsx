@@ -10,6 +10,30 @@ import Image from "next/image";
 
 const MUNICIPIOS = ["Adjuntas","Aguada","Aguadilla","Aguas Buenas","Aibonito","Anasco","Arecibo","Arroyo","Barceloneta","Barranquitas","Bayamon","Cabo Rojo","Caguas","Camuy","Canovanas","Carolina","Catano","Cayey","Ceiba","Ciales","Cidra","Coamo","Comerio","Corozal","Culebra","Dorado","Fajardo","Florida","Guanica","Guayama","Guayanilla","Guaynabo","Gurabo","Hatillo","Hormigueros","Humacao","Isabela","Jayuya","Juana Diaz","Juncos","Lajas","Lares","Las Marias","Las Piedras","Loiza","Luquillo","Manati","Maricao","Maunabo","Mayaguez","Moca","Morovis","Naguabo","Naranjito","Orocovis","Patillas","Penuelas","Ponce","Quebradillas","Rincon","Rio Grande","Sabana Grande","Salinas","San German","San Juan","San Lorenzo","San Sebastian","Santa Isabel","Toa Alta","Toa Baja","Trujillo Alto","Utuado","Vega Alta","Vega Baja","Vieques","Villalba","Yabucoa","Yauco"];
 
+const BRANDS = [
+  "Accuracy International","Aero Precision","Agency Arms","Aimpoint","American Tactical",
+  "Anderson Manufacturing","Angstadt Arms","Anschütz","Apex Tactical","Archon Firearms",
+  "Armalite","Atlas Gunworks","Auto-Ordnance","Barrett","BCM","Bear Creek Arsenal",
+  "Benelli","Beretta","Bersa","Black Rain Ordnance","Blaser","Bond Arms","Browning",
+  "Burris","Bushmaster","Canik","CBC","Century Arms","Chiappa","Christensen Arms",
+  "Cloud Defensive","CMMG","Colt","Crimson Trace","CZ","Daniel Defense","Davinci",
+  "Diamondback Firearms","DPMS","EAA","Ed Brown","EOTech","FAMARS","FN Herstal",
+  "Franklin Armory","Freedom Ordnance","Franchi","GA Precision","Geissele","Glock",
+  "Harrington & Richardson","Heckler & Koch","Henry Repeating Arms","Hi-Point","Holosun",
+  "HS Produkt","Howa","IWI","Jacob Grey","Kahr Arms","Kalashnikov","Kel-Tec","Kimber",
+  "Knight's Armament","Kriss","LaRue","Lauro Arms","Leupold","Les Baer","LMT",
+  "LWRC International","Magpul","Marlin","Mauser","Merkel","Molot","Mossberg",
+  "Nightforce","Nighthawk Custom","Noveske","OA Defense","Olympic Arms","Osight",
+  "Palmetto State Armory","Patriot Ordnance Factory","Pedersoli","POF-USA",
+  "Primary Arms","PSA","Radical Firearms","Remington","Rock Island Armory",
+  "Rock River Arms","Ruger","Sabatti","Sako","Sarsılmaz","Savage","SCCY",
+  "Seekins Precision","Shadow Systems","Shield Sights","SIG Sauer","Smith & Wesson",
+  "Spikes Tactical","Springfield Armory","Staccato","Stag Arms","Standard Manufacturing",
+  "Steyr Arms","Streamlight","SureFire","Swampfox","Tanfoglio","Taran Tactical Innovations",
+  "Taurus","Tikka","Tisas","Trijicon","TriStar","Uberti","Vortex","Walther","Weatherby",
+  "Wilson Combat","Winchester","Windham Weaponry","Zastava Arms","ZEV Technologies"
+];
+
 interface Props {
   categories: Category[];
   defaultWhatsapp: string;
@@ -190,67 +214,9 @@ export function NewListingForm({ categories, defaultWhatsapp, userId }: Props) {
           <label htmlFor="brand" className="label">Marca <span className="text-gray-400 font-normal">(opcional)</span></label>
           <select id="brand" name="brand" value={form.brand} onChange={handleChange} className="input">
             <option value="">Selecciona marca</option>
-            <optgroup label="Pistolas / Revolvers">
-              <option>Glock</option>
-              <option>Smith &amp; Wesson</option>
-              <option>Sig Sauer</option>
-              <option>Springfield Armory</option>
-              <option>Ruger</option>
-              <option>Beretta</option>
-              <option>Taurus</option>
-              <option>CZ</option>
-              <option>Walther</option>
-              <option>Kimber</option>
-              <option>HK</option>
-              <option>FN</option>
-              <option>Canik</option>
-              <option>Kahr</option>
-              <option>Kel-Tec</option>
-            </optgroup>
-            <optgroup label="Rifles">
-              <option>Daniel Defense</option>
-              <option>BCM</option>
-              <option>Aero Precision</option>
-              <option>PSA</option>
-              <option>Anderson</option>
-              <option>CMMG</option>
-              <option>Windham Weaponry</option>
-              <option>IWI</option>
-              <option>Kriss</option>
-            </optgroup>
-            <optgroup label="Escopetas">
-              <option>Mossberg</option>
-              <option>Remington</option>
-              <option>Benelli</option>
-              <option>Winchester</option>
-              <option>Browning</option>
-              <option>Savage</option>
-              <option>TriStar</option>
-            </optgroup>
-            <optgroup label="Miras y Opticas">
-              <option>Vortex</option>
-              <option>Trijicon</option>
-              <option>Leupold</option>
-              <option>EOTech</option>
-              <option>Aimpoint</option>
-              <option>Holosun</option>
-              <option>Primary Arms</option>
-              <option>Swampfox</option>
-              <option>Burris</option>
-              <option>Nightforce</option>
-              <option>Crimson Trace</option>
-              <option>Osight</option>
-              <option>Shield Sights</option>
-            </optgroup>
-            <optgroup label="Accesorios">
-              <option>Magpul</option>
-              <option>Streamlight</option>
-              <option>SureFire</option>
-              <option>Cloud Defensive</option>
-              <option>Geissele</option>
-              <option>Apex Tactical</option>
-              <option>LaRue</option>
-            </optgroup>
+            {BRANDS.map((b) => (
+              <option key={b}>{b}</option>
+            ))}
           </select>
         </div>
       </div>
