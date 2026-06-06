@@ -8,6 +8,7 @@ const CATEGORY_IMAGES: Record<string, string> = {
   escopetas: "/categories/escopetas.jpg",
   revolvers: "/categories/revolvers.jpg",
   accesorios: "/categories/accesorios.jpg",
+  "miras-y-opticas": "/categories/miras-y-opticas.jpg",
 };
 
 const FALLBACK = "/categories/default.jpg";
