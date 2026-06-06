@@ -5,7 +5,7 @@ import { CategoryFilter } from "@/components/CategoryFilter";
 import { SearchBar } from "@/components/SearchBar";
 import type { Listing, Category } from "@/types";
 import { Plus, TrendingUp, ShieldCheck, MessageCircle } from "lucide-react";
-import { MunicipioFilter } from "@/components/MunicipioFilter";
+import { BrandFilter } from "@/components/BrandFilter";
 import { CategoryGrid } from "@/components/CategoryGrid";
 
 
