@@ -47,7 +47,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <div>
               <h4 className="text-white font-semibold mb-2">Contacto</h4>
               <p className="text-sm">info@Calibre.pr</p>
-              <p className="mt-4 text-xs">© {new Date().getFullYear()} Calibre. Todos los derechos reservados.</p>
+              <div className="mt-4 text-xs space-y-1">
+  <p>© {new Date().getFullYear()} Calibre. Todos los derechos reservados.</p>
+  <a href="/terminos" className="text-gray-400 hover:text-white hover:underline">Términos y Condiciones</a>
+</div>
             </div>
           </div>
         </footer>
