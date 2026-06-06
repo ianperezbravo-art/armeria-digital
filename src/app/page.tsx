@@ -6,6 +6,8 @@ import { SearchBar } from "@/components/SearchBar";
 import type { Listing, Category } from "@/types";
 import { Plus, TrendingUp, ShieldCheck, MessageCircle } from "lucide-react";
 import { MunicipioFilter } from "@/components/MunicipioFilter";
+import { CategoryGrid } from "@/components/CategoryGrid";
+
 
 interface HomeProps {
   searchParams: Promise<{ category?: string; q?: string; condition?: string; municipio?: string }>;
@@ -87,6 +89,9 @@ export default async function HomePage({ searchParams }: HomeProps) {
           </div>
         </div>
       </section>
+
+     {/* Category Grid */}
+      <CategoryGrid categories={(categories as Category[]) ?? []} />
 
       {/* Filters + Listings */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
