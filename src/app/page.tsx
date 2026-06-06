@@ -10,7 +10,7 @@ import { CategoryGrid } from "@/components/CategoryGrid";
 
 
 interface HomeProps {
-  searchParams: Promise<{ category?: string; q?: string; condition?: string; municipio?: string }>;
+  searchParams: Promise<{ category?: string; q?: string; condition?: string; municipio?: string; brand?: string }>;
 }
 
 export default async function HomePage({ searchParams }: HomeProps) {
@@ -36,6 +36,7 @@ export default async function HomePage({ searchParams }: HomeProps) {
   }
   if (params.condition) query = query.eq("condition", params.condition);
   if (params.municipio) query = query.eq("municipio", params.municipio);
+  if (params.brand) query = query.eq("brand", params.brand);
   if (params.q) query = query.ilike("title", `%${params.q}%`);
 
   const { data: listings } = await query;
@@ -92,6 +93,7 @@ export default async function HomePage({ searchParams }: HomeProps) {
 <div className="sm:hidden">
   <MunicipioFilter activeMunicipio={params.municipio} />
 </div>
+<BrandFilter activeBrand={params.brand} />
 
         {listings && listings.length > 0 ? (
           <div id="listings" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mt-6">

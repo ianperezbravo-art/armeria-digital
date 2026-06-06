@@ -32,6 +32,7 @@ export function NewListingForm({ categories, defaultWhatsapp, userId }: Props) {
     category_id: "",
     location: "Puerto Rico",
     municipio: "",
+    brand: "",
     whatsapp: defaultWhatsapp,
   });
 
@@ -88,6 +89,7 @@ export function NewListingForm({ categories, defaultWhatsapp, userId }: Props) {
           category_id: form.category_id ? parseInt(form.category_id) : null,
           location: form.location.trim(),
           municipio: form.municipio,
+          brand: form.brand || null,
           whatsapp: form.whatsapp.replace(/\D/g, ""),
           images: uploadedUrls,
         })
@@ -95,7 +97,7 @@ export function NewListingForm({ categories, defaultWhatsapp, userId }: Props) {
         .single();
 
       if (error) throw error;
-      toast.success("�Anuncio publicado!");
+      toast.success(" Anuncio publicado!");
       router.push(`/listings/${data.id}`);
     } catch (err: any) {
       toast.error(err.message ?? "Error al publicar");
@@ -144,7 +146,7 @@ export function NewListingForm({ categories, defaultWhatsapp, userId }: Props) {
           className="hidden"
           onChange={handleImages}
         />
-        <p className="text-xs text-gray-400 mt-1">JPG, PNG o WebP � Max 8 fotos � La primera foto sera la principal</p>
+        <p className="text-xs text-gray-400 mt-1">JPG, PNG o WebP   Max 8 fotos   La primera foto sera la principal</p>
       </div>
 
       {/* Title */}
@@ -173,8 +175,94 @@ export function NewListingForm({ categories, defaultWhatsapp, userId }: Props) {
         </div>
       </div>
 
-      {/* Category & Municipio */}
+     {/* Category, Brand & Municipio */}
       <div className="grid grid-cols-2 gap-4">
+        <div>
+          <label htmlFor="category_id" className="label">Categoría</label>
+          <select id="category_id" name="category_id" value={form.category_id} onChange={handleChange} className="input">
+            <option value="">Sin Categoría</option>
+            {categories.map((c) => (
+              <option key={c.id} value={c.id}>{c.name}</option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label htmlFor="brand" className="label">Marca <span className="text-gray-400 font-normal">(opcional)</span></label>
+          <select id="brand" name="brand" value={form.brand} onChange={handleChange} className="input">
+            <option value="">Selecciona marca</option>
+            <optgroup label="Pistolas / Revólveres">
+              <option>Glock</option>
+              <option>Smith & Wesson</option>
+              <option>Sig Sauer</option>
+              <option>Springfield Armory</option>
+              <option>Ruger</option>
+              <option>Beretta</option>
+              <option>Taurus</option>
+              <option>CZ</option>
+              <option>Walther</option>
+              <option>Kimber</option>
+              <option>HK</option>
+              <option>FN</option>
+              <option>Canik</option>
+              <option>Kahr</option>
+              <option>Kel-Tec</option>
+            </optgroup>
+            <optgroup label="Rifles">
+              <option>Daniel Defense</option>
+              <option>BCM</option>
+              <option>Aero Precision</option>
+              <option>PSA</option>
+              <option>Anderson</option>
+              <option>CMMG</option>
+              <option>Windham Weaponry</option>
+              <option>IWI</option>
+              <option>Kriss</option>
+            </optgroup>
+            <optgroup label="Escopetas">
+              <option>Mossberg</option>
+              <option>Remington</option>
+              <option>Benelli</option>
+              <option>Winchester</option>
+              <option>Browning</option>
+              <option>Savage</option>
+              <option>TriStar</option>
+            </optgroup>
+            <optgroup label="Miras y Ópticas">
+              <option>Vortex</option>
+              <option>Trijicon</option>
+              <option>Leupold</option>
+              <option>EOTech</option>
+              <option>Aimpoint</option>
+              <option>Holosun</option>
+              <option>Primary Arms</option>
+              <option>Swampfox</option>
+              <option>Burris</option>
+              <option>Nightforce</option>
+              <option>Crimson Trace</option>
+              <option>Osight</option>
+              <option>Shield Sights</option>
+            </optgroup>
+            <optgroup label="Accesorios">
+              <option>Magpul</option>
+              <option>Streamlight</option>
+              <option>SureFire</option>
+              <option>Cloud Defensive</option>
+              <option>Geissele</option>
+              <option>Apex Tactical</option>
+              <option>LaRue</option>
+            </optgroup>
+          </select>
+        </div>
+      </div>
+      <div>
+        <label htmlFor="municipio" className="label">Municipio</label>
+        <select id="municipio" name="municipio" value={form.municipio} onChange={handleChange} className="input">
+          <option value="">Selecciona municipio</option>
+          {MUNICIPIOS.map((m) => (
+            <option key={m} value={m}>{m}</option>
+          ))}
+        </select>
+      </div>
         <div>
           <label htmlFor="category_id" className="label">Categoria</label>
           <select id="category_id" name="category_id" value={form.category_id} onChange={handleChange} className="input">
@@ -205,7 +293,7 @@ export function NewListingForm({ categories, defaultWhatsapp, userId }: Props) {
           onChange={handleChange}
           rows={5}
           className="input resize-none"
-          placeholder="Describe el art�culo con detalle: marca, modelo, calibre, accesorios incluidos, historial, etc."
+          placeholder="Describe el art culo con detalle: marca, modelo, calibre, accesorios incluidos, historial, etc."
           required
         />
       </div>
