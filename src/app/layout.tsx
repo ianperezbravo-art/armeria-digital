@@ -25,7 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <footer className="bg-gray-900 text-gray-400 text-sm py-10 mt-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
-              <img src="/logo.png" alt="Calibre" className="h-20 w-auto mb-2 -ml-2" />
+              <img src="/logo.png" alt="Calibre" className="h-14 w-auto mb-2" />
               <p className="text-sm leading-relaxed">
                 El marketplace de armas y accesorios #1 de Puerto Rico. Compra y vende de forma segura entre particulares y comerciantes licenciados.
               </p>
