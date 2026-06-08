@@ -35,7 +35,7 @@ export function Navbar() {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center">
-           <img src="/logo.png" alt="Calibre" className="h-10 w-auto sm:h-14" />
+           <img src="/logo.png" alt="Calibre" className="h-14 w-auto sm:h-14 -ml-1" />
           </Link>
 
           {/* Desktop nav */}
