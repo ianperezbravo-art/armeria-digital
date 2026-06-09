@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { Toaster } from "react-hot-toast";
+import { AgeVerification } from "@/components/AgeVerification";
 
 export const metadata: Metadata = {
   title: "Calibre — Mercado de Armas y Accesorios en Puerto Rico",
@@ -21,6 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="es-PR">
       <body>
         <Navbar />
+<AgeVerification />
         <main className="min-h-screen">{children}</main>
         <footer className="bg-gray-900 text-gray-400 text-sm py-10 mt-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
