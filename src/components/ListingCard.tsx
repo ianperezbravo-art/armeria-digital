@@ -70,13 +70,9 @@ export function ListingCard({ listing }: { listing: Listing }) {
 
         <p className="text-xs text-gray-400 mt-1">{formatDate(listing.created_at)}</p>
         {listing.profiles?.username && (
-          <Link
-            href={`/vendedor/${listing.profiles.username}`}
-            onClick={(e) => e.stopPropagation()}
-            className="text-xs text-brand-600 hover:underline mt-1 block"
-          >
+          <p className="text-xs text-brand-600 mt-1">
             @{listing.profiles.username}
-          </Link>
+          </p>
         )}
       </div>
     </Link>
