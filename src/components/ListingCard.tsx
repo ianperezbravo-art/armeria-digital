@@ -61,14 +61,7 @@ export function ListingCard({ listing }: { listing: Listing }) {
           </span>
         </div>
         <p className="text-xs text-gray-400 mt-1">{formatDate(listing.created_at)}</p>
-        {listing.profiles?.username && (
-          <span
-            onClick={(e) => { e.preventDefault(); window.location.href = `/vendedor/${listing.profiles!.username}`; }}
-            className="text-xs text-brand-600 hover:underline mt-1 block cursor-pointer"
-          >
-            @{listing.profiles!.username}
-          </span>
-        )}
+        
       </div>
     </Link>
   );
