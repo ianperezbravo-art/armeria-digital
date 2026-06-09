@@ -10,7 +10,6 @@ export function ListingCard({ listing }: { listing: Listing }) {
   const mainImage = listing.images?.[0];
   return (
     <Link href={`/listings/${listing.id}`} className="card hover:shadow-md transition-shadow group">
-      {/* Image */}
       <div className="relative aspect-[4/3] bg-gray-100 overflow-hidden">
         {mainImage ? (
           <Image
@@ -29,7 +28,7 @@ export function ListingCard({ listing }: { listing: Listing }) {
         )}
         {listing.featured && (
           <span className="absolute top-2 left-2 bg-yellow-400 text-yellow-900 text-xs font-bold px-2 py-0.5 rounded-full z-10">
-            ⭐ Destacado
+            Destacado
           </span>
         )}
         {listing.images?.length > 1 && (
@@ -38,8 +37,7 @@ export function ListingCard({ listing }: { listing: Listing }) {
           </span>
         )}
       </div>
-      {/* Info */}
-      <div className="p-4">
+<div className="p-4">
         <div className="flex items-start justify-between gap-2 mb-1">
           <h3 className="font-semibold text-gray-900 text-sm leading-snug line-clamp-2 flex-1">
             {listing.title}
@@ -51,4 +49,27 @@ export function ListingCard({ listing }: { listing: Listing }) {
         <p className="text-brand-600 font-bold text-lg mt-2">
           {formatPrice(listing.price)}
         </p>
-        {list
+        {listing.categories && (
+          <p className="text-xs text-gray-500 mt-1">{listing.categories.name}</p>
+        )}
+        <div className="flex items-center justify-between mt-3 text-xs text-gray-400">
+          <span className="flex items-center gap-1">
+            <MapPin className="w-3 h-3" /> {listing.municipio || listing.location}
+          </span>
+          <span className="flex items-center gap-1">
+            <Eye className="w-3 h-3" /> {listing.views}
+          </span>
+        </div>
+        <p className="text-xs text-gray-400 mt-1">{formatDate(listing.created_at)}</p>
+        {listing.profiles?.username && (
+          <span
+            onClick={(e) => { e.preventDefault(); window.location.href = `/vendedor/${listing.profiles!.username}`; }}
+            className="text-xs text-brand-600 hover:underline mt-1 block cursor-pointer"
+          >
+            @{listing.profiles!.username}
+          </span>
+        )}
+      </div>
+    </Link>
+  );
+}
