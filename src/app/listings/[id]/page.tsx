@@ -117,7 +117,7 @@ export default async function ListingPage({ params }: Props) {
             </svg>
             Contactar por WhatsApp
           </a>
-href={"sms:+" + l.whatsapp + "&body=" + encodeURIComponent("Hola, vi tu anuncio en Calibre: \"" + l.title + "\" por " + formatPrice(l.price) + ". ¿Aún está disponible?")}
+href={"sms:+" + l.whatsapp + "&body=" + encodeURIComponent("Hola, vi tu anuncio en Calibre: " + l.title + " por " + formatPrice(l.price) + ". Aun esta disponible?")}
             className="w-full text-base py-4 flex items-center justify-center gap-2 rounded-xl border-2 border-gray-300 text-gray-700 font-semibold hover:border-gray-400 hover:bg-gray-50 transition-colors"
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
