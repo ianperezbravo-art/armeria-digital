@@ -46,8 +46,9 @@ export default async function ListingPage({ params }: Props) {
     .eq("listing_id", id);
 
   const l = listing as Listing;
-  const waMessage = `Hola, vi tu anuncio en Calibre: "${l.title}" por ${formatPrice(l.price)}. ¿Aún está disponible?`;
+  const waMessage = "Hola, vi tu anuncio en Calibre: " + l.title + " por " + formatPrice(l.price) + ". Aun esta disponible?";
   const waUrl = buildWhatsAppUrl(l.whatsapp, waMessage);
+  const smsUrl = "sms:+" + l.whatsapp + "&body=" + encodeURIComponent("Hola, vi tu anuncio en Calibre: " + l.title + " por " + formatPrice(l.price) + ". Aun esta disponible?");
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -58,7 +59,7 @@ export default async function ListingPage({ params }: Props) {
         {l.categories && (
           <>
             <span>/</span>
-            <Link href={`/?category=${l.categories.slug}`} className="hover:text-brand-600">
+            <Link href={"/?category=" + l.categories.slug} className="hover:text-brand-600">
               {l.categories.name}
             </Link>
           </>
@@ -76,7 +77,7 @@ export default async function ListingPage({ params }: Props) {
           <div className="card p-5">
             <div className="flex items-start gap-3 mb-2">
               <h1 className="text-xl font-bold text-gray-900 flex-1">{l.title}</h1>
-              <span className={`shrink-0 text-xs px-2 py-1 rounded-full font-semibold ${CONDITION_COLORS[l.condition]}`}>
+              <span className={"shrink-0 text-xs px-2 py-1 rounded-full font-semibold " + CONDITION_COLORS[l.condition]}>
                 {CONDITION_LABELS[l.condition]}
               </span>
             </div>
@@ -100,13 +101,13 @@ export default async function ListingPage({ params }: Props) {
               </span>
               {watcherCount && watcherCount > 0 && (
                 <span className="flex items-center gap-1">
-                  👁 {watcherCount} siguiendo
+                  {watcherCount} siguiendo
                 </span>
               )}
             </div>
           </div>
 
-          <a
+          
             href={waUrl}
             target="_blank"
             rel="noopener noreferrer"
@@ -117,18 +118,19 @@ export default async function ListingPage({ params }: Props) {
             </svg>
             Contactar por WhatsApp
           </a>
-href={"sms:+" + l.whatsapp + "&body=" + encodeURIComponent("Hola, vi tu anuncio en Calibre: " + l.title + " por " + formatPrice(l.price) + ". Aun esta disponible?")}
+
+          
+            href={smsUrl}
             className="w-full text-base py-4 flex items-center justify-center gap-2 rounded-xl border-2 border-gray-300 text-gray-700 font-semibold hover:border-gray-400 hover:bg-gray-50 transition-colors"
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
               <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/>
             </svg>
             Enviar Mensaje
-          </a>          {user && user.id !== l.user_id && (
-            <WatchlistButton
-              listingId={id}
-              initialInWatchlist={inWatchlist}
-            />
+          </a>
+
+          {user && user.id !== l.user_id && (
+            <WatchlistButton listingId={id} initialInWatchlist={inWatchlist} />
           )}
 
           {l.profiles && (
@@ -154,7 +156,7 @@ href={"sms:+" + l.whatsapp + "&body=" + encodeURIComponent("Hola, vi tu anuncio 
       </div>
 
       <div className="card p-6 mt-8">
-        <h2 className="text-lg font-bold text-gray-900 mb-4">Descripción</h2>
+        <h2 className="text-lg font-bold text-gray-900 mb-4">Descripcion</h2>
         <p className="text-gray-700 whitespace-pre-line leading-relaxed">{l.description}</p>
       </div>
     </div>
