@@ -107,7 +107,7 @@ export default async function ListingPage({ params }: Props) {
             </div>
           </div>
 
-          
+            <a
             href={waUrl}
             target="_blank"
             rel="noopener noreferrer"
@@ -118,10 +118,9 @@ export default async function ListingPage({ params }: Props) {
             Contactar por WhatsApp
           </a>
 
-          
+          <a
             href={smsUrl}
-            className="w-full text-base py-4 flex items-center justify-center gap-2 rounded-xl border-2 border-gray-300 text-gray-700 font-semibold hover:border-gray-400 hover:bg-gray-50 transition-colors"
-          >
+            className="w-full text-base py-4 flex items-center justify-center gap-2 rounded-xl border-2 border-gray-300 text-gray-700 font-semibold hover:border-gray-400 hover:bg-gray-50 transition-colors">
             <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
               <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/>
             </svg>
